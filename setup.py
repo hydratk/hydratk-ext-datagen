@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+from sys import argv
+from os import path
+from subprocess import call
 
 with open("README.rst", "r") as f:
-    readme = f.readlines()
+    readme = f.read()
     
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -21,20 +24,16 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",    
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Utilities"
-]
-
-packages = [
-            'hydratk.extensions.datagen' 
-           ]  
+] 
 
 requires = [
             'hydratk',
             'hydratk-lib-network'
            ]
            
-data_files=[
-            ('/etc/hydratk/conf.d', ['etc/hydratk/conf.d/hydratk-ext-datagen.conf']) 
-           ]  
+files = {
+         'etc/hydratk/conf.d/hydratk-ext-datagen.conf' : '/etc/hydratk/conf.d'
+        }  
 
 entry_points = {
                 'console_scripts': [
@@ -42,7 +41,8 @@ entry_points = {
                 ]
                }                    
                 
-setup(name='hydratk-ext-datagen',
+setup(
+      name='hydratk-ext-datagen',
       version='0.1.0',
       description='Utilities for data generation',
       long_description=readme,
@@ -54,6 +54,16 @@ setup(name='hydratk-ext-datagen',
       install_requires=requires,
       package_dir={'' : 'src'},
       classifiers=classifiers,
-      data_files=data_files,
+      zip_safe=False,  
       entry_points=entry_points 
      )
+
+if ('install' in argv or 'bdist_egg' in argv or 'bdist_wheel' in argv):
+    
+    for file, dir in files.items():    
+        if (not path.exists(dir)):
+            call('mkdir -p {0}'.format(dir), shell=True)
+            
+        call('cp {0} {1}'.format(file, dir), shell=True) 
+        
+    call('chmod -R a+r /etc/hydratk', shell=True)
