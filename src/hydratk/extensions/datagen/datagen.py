@@ -143,15 +143,15 @@ class Extension(extension.Extension):
         output = CommandlineTool.get_input_option('gen-output')        
         
         if (not action):
-            print ('Missing option action')            
+            print('Missing option action')            
         elif (action not in ['encode', 'decode']):
-            print ('Action not in encode|decode')                         
+            print('Action not in encode|decode')                         
         elif (not spec):
-            print ('Missing option spec')             
+            print('Missing option spec')             
         elif (not element):
-            print ('Missing option element')                          
+            print('Missing option element')                          
         elif (not input):
-            print ('Missing option input') 
+            print('Missing option input') 
         else:                       
         
             from hydratk.extensions.datagen.asn1codec import ASN1Codec
@@ -165,11 +165,11 @@ class Extension(extension.Extension):
                     result = codec.decode(input, element, output) 
                     
                 if (not result):
-                    print ('{0} error'.format(action)) 
+                    print('{0} error'.format(action)) 
                 else:
-                    print ('{0} finished'.format(action))                          
+                    print('{0} finished'.format(action))                          
             else:
-                print ('Import specification error')                         
+                print('Import specification error')                         
         
     def gen_json(self):
         """Method handles command gen-json
@@ -190,7 +190,7 @@ class Extension(extension.Extension):
         output = CommandlineTool.get_input_option('gen-output') 
         
         if (not spec):
-            print ('Missing option spec')
+            print('Missing option spec')
         else:     
         
             from hydratk.extensions.datagen.jsongen import JSONGen 
@@ -199,11 +199,11 @@ class Extension(extension.Extension):
             if (gen.import_schema(spec)):
                 output = None if (not output) else output
                 if (not gen.tojson(output)):
-                    print ('Generation error')
+                    print('Generation error')
                 else:
-                    print ('Sample generated')                     
+                    print('Sample generated')                     
             else:
-                print ('Import specification error')    
+                print('Import specification error')    
             
     def gen_xml(self):
         """Method handles command gen-xml
@@ -226,9 +226,9 @@ class Extension(extension.Extension):
         envelope = CommandlineTool.get_input_option('gen-envelope')  
         
         if (not spec):
-            print ('Missing option spec')
+            print('Missing option spec')
         elif (not element):
-            print ('Missing option element')
+            print('Missing option element')
         else:           
         
             from hydratk.extensions.datagen.xmlgen import XMLGen 
@@ -237,8 +237,8 @@ class Extension(extension.Extension):
             if (gen.import_spec(spec)):                
                 output = None if (not output) else output
                 if (not gen.toxml(element, output, envelope)):
-                    print ('Generation error')  
+                    print('Generation error')  
                 else:
-                    print ('Sample generated')   
+                    print('Sample generated')   
             else:
-                print ('Import specification error')                                   
+                print('Import specification error')                                   

@@ -117,8 +117,8 @@ class XMLGen():
             
             return True                
         
-        except ValueError, ex:
-            print ex
+        except ValueError as ex:
+            print(ex)
             return False        
         except Exception, ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
@@ -173,10 +173,10 @@ class XMLGen():
             
             return True                      
     
-        except ValueError, ex:
-            print ex
+        except ValueError as ex:
+            print(ex)
             return False       
-        except Exception, ex:
+        except Exception as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False     
     

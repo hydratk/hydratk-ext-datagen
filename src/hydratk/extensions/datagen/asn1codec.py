@@ -116,10 +116,10 @@ class ASN1Codec():
                     
             return True                             
         
-        except ValueError, ex:
-            print ex
+        except ValueError as ex:
+            print(ex)
             return False         
-        except Exception, ex:
+        except Exception as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
         
@@ -172,10 +172,10 @@ class ASN1Codec():
                     
             return True                 
         
-        except ValueError, ex:
-            print ex
+        except ValueError as ex:
+            print(ex)
             return False        
-        except Exception, ex:
+        except Exception as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())   
             return False     
         
@@ -231,10 +231,10 @@ class ASN1Codec():
             self._mh.fire_event(ev)
                     
             return True              
-        except ValueError, ex:
-            print ex
+        except ValueError as ex:
+            print(ex)
             return False
-        except Exception, ex:
+        except Exception as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())  
             return False             
         
@@ -323,7 +323,7 @@ class ASN1Codec():
             
         if (obj._type in ('SEQUENCE', 'SET')):
             for key in obj._cont._index:
-                if (val.has_key(key)):           
+                if (key in val):           
                     output[key] = OrderedDict()
                     output[key] = self._create_dict(obj._cont._dict[key], val[key], output[key])
         elif (obj._type == 'SEQUENCE OF'):
