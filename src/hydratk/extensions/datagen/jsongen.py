@@ -20,7 +20,7 @@ jsongen_after_write
 
 from hydratk.core.masterhead import MasterHead
 from hydratk.core import event
-from jsonlib2 import read, dump
+from simplejson import loads, dumps
 from os import path
 
 class JSONGen():
@@ -81,7 +81,7 @@ class JSONGen():
                 if (path.exists(filename)):
                     self._path = path.dirname(path.abspath(filename))           
                     with open(filename, 'r') as f:                                         
-                        self._schema = read(f.read())            
+                        self._schema = loads(f.read())            
                 else:
                     raise ValueError('File {0} not found'.format(filename))
             
@@ -127,8 +127,8 @@ class JSONGen():
             if (ev.will_run_default()):                               
                 doc = self._tojson_rec()                
                 outfile = 'sample.json' if (outfile == None) else outfile
-                with open(outfile, 'w') as f: 
-                    dump(doc, f, indent=4)
+                with open(outfile, 'w') as f:
+                    f.write(dumps(doc, indent=4)) 
     
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_jsongen_sample_written', outfile), self._mh.fromhere())   
             ev = event.Event('jsongen_after_write')
@@ -207,7 +207,7 @@ class JSONGen():
             
         if (path.exists(filename)):
             with open(filename, 'r') as f:                                         
-                ref_schema = read(f.read())
+                ref_schema = loads(f.read())
                
             return ref_schema             
         else:

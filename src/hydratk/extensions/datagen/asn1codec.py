@@ -27,7 +27,7 @@ from asn1.asn1.processor import process_modules
 from asn1.asn1.ASN1 import ASN1Obj
 from asn1.asn1.BER import BER
 from os import path
-from jsonlib2 import read, dump
+from simplejson import loads, dumps
 from collections import OrderedDict
 from binascii import hexlify
 from datetime import datetime
@@ -151,7 +151,7 @@ class ASN1Codec():
                 if (path.exists(infile)):
                     self._path = path.dirname(path.abspath(infile))           
                     with open(infile, 'r') as f: 
-                        objects = read(f.read())
+                        objects = loads(f.read())
                         if (objects.__class__.__name__ == 'list'):
                             input = []
                             for record in objects:
@@ -222,7 +222,7 @@ class ASN1Codec():
                         else:        
                             self._elements[element].decode(records[0])
                             output = self._create_dict(self._elements[element])
-                        dump(output, f, indent=4)                                                      
+                        f.write(output, indent=4)                                                      
                 else:
                     raise ValueError('File {0} not found'.format(infile)) 
             
