@@ -54,6 +54,7 @@ class XMLGen():
     """
     
     _mh = None
+    _path = None
     _client = None
     
     def __init__(self):
@@ -73,6 +74,12 @@ class XMLGen():
         """ client property getter """
         
         return self._client
+    
+    @property
+    def path(self):
+        """ path property getter """
+        
+        return self._path    
     
     def import_spec(self, filename):
         """Method imports specification
@@ -103,24 +110,23 @@ class XMLGen():
                 
                     if (spec_type == 'WSDL'):
                         self._client = Client('file://'+filename, cache=None)
+                        self._path = path.abspath(filename)
                     elif (spec_type == 'XSD'):
                         wsdl = self._create_dummy_wsdl(filename)
                         self._client = Client('file://'+wsdl, cache=None)
+                        self._path = wsdl
                     else:
                         raise ValueError('Unknown specification type: {0}'.format(spec_type))
                 else:
                     raise ValueError('File {0} not found'.format(filename)) 
-                
+                                
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_xmlgen_spec_imported'), self._mh.fromhere())   
             ev = event.Event('xmlgen_after_import_spec')
             self._mh.fire_event(ev)            
             
             return True                
-        
-        except ValueError as ex:
-            print(ex)
-            return False        
-        except Exception, ex:
+               
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False         
 
@@ -144,7 +150,7 @@ class XMLGen():
         try:
     
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_xmlgen_write_sample'), self._mh.fromhere()) 
-            ev = event.Event('jsongen_before_write', root, outfile, envelope)
+            ev = event.Event('xmlgen_before_write', root, outfile, envelope)
             if (self._mh.fire_event(ev) > 0):
                 root = ev.argv(0)
                 outfile = ev.argv(1)
@@ -157,30 +163,27 @@ class XMLGen():
                 if (envelope): 
                     ns = '{%s}' % 'http://schemas.xmlsoap.org/soap/envelope/'
                     doc = Element(ns+'Envelope')
-                    SubElement(doc, ns+'Header')
-                    body = SubElement(doc, ns+'Body')
+                    SubElement(doc, 'Header')
+                    body = SubElement(doc, 'Body')
                     body.append(self._toxml_rec(root)) 
                 else:
                     doc = self._toxml_rec(root)
                     
                 outfile = 'sample.xml' if (outfile == None) else outfile
                 with open(outfile, 'w') as f: 
-                    f.write(tostring(doc, encoding='UTF-8', xml_declaration=True, pretty_print=True))
+                    f.write(tostring(doc, encoding='UTF-8', xml_declaration=True, pretty_print=True).decode())
                     
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_xmlgen_sample_written', outfile), self._mh.fromhere())   
             ev = event.Event('xmlgen_after_write')
             self._mh.fire_event(ev)            
             
             return True                      
-    
-        except ValueError as ex:
-            print(ex)
-            return False       
-        except Exception as ex:
+      
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False     
     
-    def _toxml_rec(self, root, obj=None):
+    def _toxml_rec(self, root, obj=None, ns_cur=None):
         """Method creates sample xml document
         
         It is used in recursive traversal
@@ -188,6 +191,7 @@ class XMLGen():
         Args:
            root (str): root element name
            obj (obj): suds element object 
+           ns_cur (str): current namespace
 
         Returns:
            xml: xml document
@@ -205,24 +209,28 @@ class XMLGen():
             if (obj == None):
                 obj = self._client.factory.create(root)
                      
-            ns = '{%s}' % self._get_element_ns(obj.__class__.__name__)   
-            doc = Element(ns+root)    
-
-            for key in obj.__keylist__:
-        
-                subelem = obj[key]        
+            ns = '{%s}' % self._get_element_ns(obj.__class__.__name__)      
+            if (ns != '{None}' and ns != ns_cur):    
+                doc = Element(ns+root)
+            else:
+                doc = Element(root)
+                ns = ns_cur
+            
+            for key in obj.__keylist__:                
+                subelem = obj[key]     
+         
                 if (subelem == None):
-                    SubElement(doc, ns+key).text = '?'
-                elif (subelem == []):
-                    inner_doc = self._toxml_rec(key, None)
+                    SubElement(doc, key).text = '?'
+                elif (subelem == [] or '[]' in subelem.__str__()):
+                    inner_doc = self._toxml_rec(key, None, ns)
                     if (inner_doc != None):
                         doc.append(inner_doc)                 
                 else:
                     el_type = self._get_element_type(subelem.__class__.__name__)
                     if (el_type == 'Simple'):
-                        SubElement(doc, ns+key).text = '?'
+                        SubElement(doc, key).text = '?'
                     elif (el_type == 'Complex'):
-                        inner_doc = self._toxml_rec(key, subelem)
+                        inner_doc = self._toxml_rec(key, subelem, ns)
                         if (inner_doc != None):
                             doc.append(inner_doc)                   
     
@@ -307,19 +315,22 @@ class XMLGen():
                 
         """     
     
-        if (path.exists(xsd)):        
-            with open(xsd, 'r') as f:                   
-                tns = search(r'targetNamespace="(.*)"', f.read()).group(1)
-                if ('"' in tns):
-                    tns = tns[: tns.index('"')]
+        if (path.exists(xsd)):    
+            try:    
+                with open(xsd, 'r') as f:                   
+                    tns = search(r'targetNamespace="(.*)"', f.read()).group(1)
+                    if ('"' in tns):
+                        tns = tns[: tns.index('"')]
                     
-            filename = xsd.split('/')[-1]
-            wsdl = path.abspath(xsd)[:-3]+'wsdl'
+                filename = xsd.split('/')[-1]
+                wsdl = path.abspath(xsd)[:-3]+'wsdl'
         
-            with open(wsdl, 'w') as f:             
-                f.write(wsdl_tmpl.format(tns, tns, tns, filename)) 
+                with open(wsdl, 'w') as f:             
+                    f.write(wsdl_tmpl.format(tns, tns, tns, filename)) 
         
-            return wsdl
+                return wsdl
+            except AttributeError as ex:
+                raise ValueError('File {0} is not valid XSD'.format(xsd))
             
         else:
             raise ValueError('File {0} not found'.format(xsd))       

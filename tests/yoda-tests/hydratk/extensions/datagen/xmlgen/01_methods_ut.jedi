@@ -1,0 +1,567 @@
+Test-Scenario-1:
+  Id: ts_01
+  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Name: ts_init
+  Desc: Test method __init__
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_init
+    Desc: Initialize XMLGen
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_init
+      Desc: Initialize
+      
+      Test: |
+        g = XMLGen()
+        res = g.__class__.__name__
+      
+      Validate: |
+        this.test_result = res
+        assert (res == 'XMLGen'), '__init__ = XMLGen'
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Name: ts_props
+  Desc: Test properties
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen   
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_getters
+    Desc: Getter methods
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_path
+      Desc: Getter path
+      
+      Test: |
+        g = XMLGen()
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
+        g.import_spec(path)
+        res = g.path
+      
+      Validate: |   
+        this.test_result = res
+        exp = g._path
+        assert(res == exp), 'path = {0}'.format(exp)
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_client
+      Desc: Getter client              
+        
+      Test: |
+        res = g.client.__class__.__name__
+      
+      Validate: |   
+        this.test_result = res
+        exp = g._client.__class__.__name__
+        assert(res == exp), 'path = {0}'.format(exp)                
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Name: ts_create_dummy_wsdl
+  Desc: Test method _create_dummy_wsdl
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen  
+    from os import path, remove 
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_create_wsdl
+    Desc: Create dummy WSDL from XSD
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_create
+      Desc: Create
+      
+      Test: |
+        g = XMLGen()
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
+        wsdl = g._create_dummy_wsdl(file)
+              
+      Validate: |  
+        this.test_result = res
+        assert (wsdl != None), '_create_dummy_wsdl is not empty'
+        this.test_result = res = (path.exists(wsdl))
+        assert (res), 'file {0} created'.format(res)
+        remove(wsdl)     
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        try:
+            g._create_dummy_wsdl('xx')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |
+        this.test_result = ex
+        assert (ex), '_create_dummy_wsdl raises ValueError'
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_spec
+      Desc: Invalid specification 
+      
+      Test: |
+        file = './test.xsd'
+        with open(file, 'w') as f:
+            f.write('xx')
+      
+        try:
+            g._create_dummy_wsdl(file)
+            ex = False
+        except ValueError:
+            ex = True
+        
+      Validate: |
+        this.test_result = ex
+        assert (ex), '_create_dummy_wsdl raises ValueError'
+        remove(file)  
+        
+Test-Scenario-4:
+  Id: ts_04
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_import_spec
+  Desc: Test method import_spec
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook 
+    from os import path, remove 
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_import_spec
+    Desc: Import specification
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_wsdl
+      Desc: Import WSDL
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['xmlgen_before_import_spec', 'xmlgen_after_import_spec']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])
+        g = XMLGen()
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
+        res = g.import_spec(file)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'import_spec = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'import_spec fires {0}'.format(evs)  
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]     
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_xsd
+      Desc: Import XSD
+                       
+      Test: |
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
+        res = g.import_spec(file)
+      
+      Validate: |
+        this.test_result = res
+        assert (res), 'import_spec = True'
+        file = file[:-3]+'wsdl'
+        this.test_result = res = (path.exists(file))
+        assert (res), 'file {0} created'.format(file)
+        remove(file)
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = g.import_spec('xx')
+      
+      Validate: |  
+        this.test_result = res
+        assert (not res), 'import_spec = False'
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_spec
+      Desc: Invalid specification
+      
+      Test: |
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        res = g.import_spec(file)
+      
+      Validate: |  
+        this.test_result = res
+        assert (not res), 'import_spec = False'  
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_wsdl
+      Desc: Invalid WSDL       
+      
+      Test: |
+        file = './test.wsdl'
+        with open(file, 'w') as f:
+            f.write('xx') 
+            
+        res = g.import_spec(file)
+      
+      Validate: |  
+        this.test_result = res
+        assert (not res), 'import_spec = False'  
+        remove(file)     
+        
+Test-Scenario-5:
+  Id: ts_05
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_get_element_type
+  Desc: Test method _get_element_type
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_get_elem_type
+    Desc: Get element type
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported
+      
+      Test: |
+        try:
+            g = XMLGen()
+            g._get_element_type('xx')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |    
+        this.test_result = ex
+        assert (ex), '_get_element_type raises ValueError'  
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid
+      Desc: Invalid element
+      
+      Test: |
+        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        res = g._get_element_type('xx')
+      
+      Validate: |                      
+        this.test_result = res
+        assert (res == None), '_get_element_type = None'     
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_complex
+      Desc: Complex element
+      
+      Test: |
+        res = g._get_element_type('customer')
+      
+      Validate: |                      
+        this.teset_result = res
+        assert (res == 'Complex'), '_get_element_type = Complex'     
+        
+Test-Scenario-6:
+  Id: ts_06
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_get_element_ns
+  Desc: Test method _get_element_ns
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_get_elem_ns
+    Desc: Get element namespace
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported
+      
+      Test: |
+        try:
+            g = XMLGen()
+            g._get_element_ns('xx')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |    
+        this.test_result = ex
+        assert (ex), '_get_element_ns raises ValueError'  
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid
+      Desc: Invalid element
+      
+      Test: |
+        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        res = g._get_element_ns('xx')
+      
+      Validate: |                      
+        this.test_result = res
+        assert (res == None), '_get_element_ns = None'     
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_namespace
+      Desc: Element with namespace
+      
+      Test: |
+        res = g._get_element_ns('customer')
+      
+      Validate: |                      
+        this.teset_result = res
+        exp = 'http://hydratk.org/'
+        assert (res == exp), '_get_element_type = {0}'.format(exp) 
+        
+Test-Scenario-7:
+  Id: ts_07
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_toxml_rec
+  Desc: Test method _toxml_rec
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    from lxml.etree import tostring
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_create_rec
+    Desc: Create XML record
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported    
+    
+      Test: |
+        try:
+            g = XMLGen()
+            g._toxml_rec('xx')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |    
+        this.test_result = ex
+        assert (ex), '_toxml_rec raises ValueError'   
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_complex
+      Desc: Complex element
+      
+      Test: |
+        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        res = tostring(g._toxml_rec('customer')).decode()
+      
+      Validate: |                     
+        this.test_result = res
+        exp = '<ns0:customer xmlns:ns0="http://hydratk.org/"><id>?</id><name>?</name><status>?</status>' + \
+              '<segment>?</segment><birth_no>?</birth_no><reg_no>?</reg_no><tax_no>?</tax_no></ns0:customer>'       
+        assert (res == exp), '_toxml_rec = {0}'.format(exp)        
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_mult_complex
+      Desc: Mutiple complex element
+      
+      Test: |
+        res = tostring(g._toxml_rec('create_service')).decode()
+      
+      Validate: |                     
+        this.test_result = res
+        exp = '<ns0:create_service xmlns:ns0="http://hydratk.org/"><service>?</service><customer>?</customer><payer>?</payer>' + \
+              '<subscriber>?</subscriber><status>?</status><params><entry><key>?</key><value>?</value></entry></params></ns0:create_service>'       
+        assert (res == exp), '_toxml_rec = {0}'.format(exp)      
+        
+Test-Scenario-8:
+  Id: ts_08
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_toxml
+  Desc: Test method toxml
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook  
+    from os import path, remove
+    from sys import version_info
+    
+    if (version_info[0] == 2):
+        from string import replace
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_create_rec
+    Desc: Create XML record
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported    
+    
+      Test: |
+        g = XMLGen()
+        res = g.toxml('xx')
+
+      Validate: |    
+        this.test_result = res
+        assert (not res), 'toxml = False'    
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_complex
+      Desc: Complex element
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['xmlgen_before_write', 'xmlgen_after_write']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])      
+        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        res = g.toxml('customer')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (res), 'toxml = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'toxml fires {0}'.format(evs) 
+        outfile = './sample.xml' 
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)
+        
+        with open(outfile, 'r') as f:
+            cont = f.read()
+        cont = replace(replace(cont, '\n', ''), ' ', '') if (version_info[0] == 2) else cont.replace('\n', '').replace(' ', '')
+        
+        this.test_result = cont
+        exp = '<?xmlversion=\'1.0\'encoding=\'UTF-8\'?><ns0:customerxmlns:ns0="http://hydratk.org/"><id>?</id><name>?</name>' + \
+              '<status>?</status><segment>?</segment><birth_no>?</birth_no><reg_no>?</reg_no><tax_no>?</tax_no></ns0:customer>'       
+        assert (cont == exp), 'toxml = {0}'.format(exp)
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]        
+        remove(outfile)    
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_mult_complex
+      Desc: Mutiple complex element
+      
+      Test: |
+        res = g.toxml('create_service')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (res), 'toxml = True'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)
+        
+        with open(outfile, 'r') as f:
+            cont = f.read()
+        cont = replace(replace(cont, '\n', ''), ' ', '') if (version_info[0] == 2) else cont.replace('\n', '').replace(' ', '')
+        
+        this.test_result = cont        
+        exp = '<?xmlversion=\'1.0\'encoding=\'UTF-8\'?><ns0:create_servicexmlns:ns0="http://hydratk.org/"><service>?</service>' + \
+              '<customer>?</customer><payer>?</payer><subscriber>?</subscriber><status>?</status><params><entry><key>?</key>'+ \
+              '<value>?</value></entry></params></ns0:create_service>'       
+        assert (cont == exp), 'toxml = {0}'.format(exp)    
+        remove(outfile)
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_outfile
+      Desc: Set output file
+      
+      Test: |
+        outfile = './test.xml'
+        res = g.toxml('create_service', outfile)
+      
+      Validate: |                      
+        this.test_result = res
+        assert (res), 'toxml = True'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)
+        remove(outfile)
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_envelope
+      Desc: Add SOAP envelope
+      
+      Test: |
+        res = g.toxml('create_service', outfile, envelope=True)
+      
+      Validate: |                     
+        this.test_result = res
+        assert (res), 'toxml = True'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)
+        
+        with open(outfile, 'r') as f:
+            cont = f.read()
+        cont = replace(replace(cont, '\n', ''), ' ', '') if (version_info[0] == 2) else cont.replace('\n', '').replace(' ', '')
+        
+        this.test_result = cont        
+        exp = '<?xmlversion=\'1.0\'encoding=\'UTF-8\'?><ns0:Envelopexmlns:ns0="http://schemas.xmlsoap.org/soap/envelope/">' + \
+              '<Header/><Body><ns0:create_servicexmlns:ns0="http://hydratk.org/"><service>?</service>' + \
+              '<customer>?</customer><payer>?</payer><subscriber>?</subscriber><status>?</status><params><entry><key>?</key>'+ \
+              '<value>?</value></entry></params></ns0:create_service></Body></ns0:Envelope>'          
+        assert (cont == exp), 'toxml = {0}'.format(exp)    
+        remove(outfile)        

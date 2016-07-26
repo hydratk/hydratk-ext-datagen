@@ -79,7 +79,7 @@ class JSONGen():
     
             if (ev.will_run_default()):     
                 if (path.exists(filename)):
-                    self._path = path.dirname(path.abspath(filename))           
+                    self._path = path.dirname(path.abspath(filename))          
                     with open(filename, 'r') as f:                                         
                         self._schema = loads(f.read())            
                 else:
@@ -90,11 +90,8 @@ class JSONGen():
             self._mh.fire_event(ev)            
             
             return True
-            
-        except ValueError as ex:
-            print(ex)
-            return False            
-        except Exception as ex:
+             
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False             
         
@@ -202,7 +199,7 @@ class JSONGen():
         """          
         
         filename = uri if (not 'file://' in uri) else uri[7:]  
-        if (not '/' in filename):
+        if (not '/' in filename and self._path != None):
             filename = path.join(self._path, filename)
             
         if (path.exists(filename)):

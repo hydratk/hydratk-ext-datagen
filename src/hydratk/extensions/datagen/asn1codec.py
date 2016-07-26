@@ -23,20 +23,23 @@ asn1_after_decode
 
 from hydratk.core.masterhead import MasterHead
 from hydratk.core import event
-from asn1.asn1.processor import process_modules
-from asn1.asn1.ASN1 import ASN1Obj
-from asn1.asn1.BER import BER
 from os import path
 from simplejson import loads, dumps
-from collections import OrderedDict
 from binascii import hexlify
-from datetime import datetime
+from sys import version_info
+
+if (version_info[0] == 2 and version_info[1] == 7):
+    from asn1.asn1.processor import process_modules
+    from asn1.asn1.ASN1 import ASN1Obj
+    from asn1.asn1.BER import BER
+    from collections import OrderedDict
 
 class ASN1Codec():
     """Class ASN1Codec
     """
     
     _mh = None
+    _path = None
     _spec = None
     _elements = None
     
@@ -48,9 +51,18 @@ class ASN1Codec():
         Args:   
            none         
                 
-        """         
+        """  
+        
+        if (not (version_info[0] == 2 and version_info[1] == 7)):
+            raise NotImplementedError('ASN.1 codec is not supported for Python 3.x due to external library libmich')               
         
         self._mh = MasterHead.get_head()
+    
+    @property
+    def path(self):
+        """ path property getter """
+        
+        return self._path    
     
     @property
     def spec(self):
@@ -106,7 +118,8 @@ class ASN1Codec():
                         self._elements = self._spec[0]['TYPE']._dict
                         ASN1Obj._SAFE = True
                         ASN1Obj._RET_STRUCT = True
-                        ASN1Obj.CODEC = BER                                                 
+                        ASN1Obj.CODEC = BER    
+                        self._path = path.abspath(filename)                                            
                 else:
                     raise ValueError('File {0} not found'.format(filename))      
                 
@@ -115,11 +128,8 @@ class ASN1Codec():
             self._mh.fire_event(ev)
                     
             return True                             
-        
-        except ValueError as ex:
-            print(ex)
-            return False         
-        except Exception as ex:
+               
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
         
@@ -142,14 +152,21 @@ class ASN1Codec():
         
         try:
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encode', infile), self._mh.fromhere()) 
-            ev = event.Event('asn1_before_encode', infile, outfile)
+            
+            if (self._spec == None):
+                raise ValueError('Specification is not imported yet')             
+            
+            ev = event.Event('asn1_before_encode', infile, element, outfile)
             if (self._mh.fire_event(ev) > 0):
                 infile = ev.argv(0)
-                outfile = ev.argv(1)        
+                element = ev.argv(1)
+                outfile = ev.argv(2)        
         
-            if (ev.will_run_default()): 
-                if (path.exists(infile)):
-                    self._path = path.dirname(path.abspath(infile))           
+            if (ev.will_run_default()):
+                if (element not in self._elements):
+                    raise ValueError('Invalid element {0}'.format(element)) 
+                
+                if (path.exists(infile)):         
                     with open(infile, 'r') as f: 
                         objects = loads(f.read())
                         if (objects.__class__.__name__ == 'list'):
@@ -158,9 +175,9 @@ class ASN1Codec():
                                 input.append(self._update_datatypes(record))
                         else:                                     
                             input = [self._update_datatypes(objects)]            
-                    outfile = infile.split('.')[0]+'.bin' if (outfile == None) else outfile               
+                    outfile = path.abspath(infile).split('.')[0]+'.bin' if (outfile == None) else outfile               
                     with open(outfile, 'wb') as f:
-                        for record in input:                        
+                        for record in input:                      
                             output = self._elements[element].encode(record)
                             f.write(str(output()))                                                         
                 else:
@@ -171,11 +188,8 @@ class ASN1Codec():
             self._mh.fire_event(ev)
                     
             return True                 
-        
-        except ValueError as ex:
-            print(ex)
-            return False        
-        except Exception as ex:
+             
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())   
             return False     
         
@@ -199,18 +213,25 @@ class ASN1Codec():
         try:
         
             self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decode', infile), self._mh.fromhere()) 
-            ev = event.Event('asn1_before_decode', infile, outfile)
+            
+            if (self._spec == None):
+                raise ValueError('Specification is not imported yet')             
+            
+            ev = event.Event('asn1_before_decode', infile, element, outfile)
             if (self._mh.fire_event(ev) > 0):
                 infile = ev.argv(0)
-                outfile = ev.argv(1)           
+                element = ev.argv(1)
+                outfile = ev.argv(2)           
         
             if (ev.will_run_default()): 
-                if (path.exists(infile)):
-                    self._path = path.dirname(path.abspath(infile))           
+                if (element not in self._elements):
+                    raise ValueError('Invalid element {0}'.format(element))                
+                
+                if (path.exists(infile)):         
                     with open(infile, 'rb') as f:                                         
                         input = f.read()
                 
-                    outfile = infile.split('.')[0]+'.json' if (outfile == None) else outfile     
+                    outfile = path.abspath(infile).split('.')[0]+'.json' if (outfile == None) else outfile     
                     with open(outfile, 'w') as f:                      
                         records = self._split_records(input)
 
@@ -219,10 +240,10 @@ class ASN1Codec():
                             for record in records:                                
                                 self._elements[element].decode(record)
                                 output.append(self._create_dict(self._elements[element]))
-                        else:        
+                        else:                                    
                             self._elements[element].decode(records[0])
                             output = self._create_dict(self._elements[element])
-                        f.write(output, indent=4)                                                      
+                        f.write(dumps(output, indent=4))                                                      
                 else:
                     raise ValueError('File {0} not found'.format(infile)) 
             
@@ -231,10 +252,8 @@ class ASN1Codec():
             self._mh.fire_event(ev)
                     
             return True              
-        except ValueError as ex:
-            print(ex)
-            return False
-        except Exception as ex:
+
+        except (Exception, ValueError) as ex:
             self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())  
             return False             
         

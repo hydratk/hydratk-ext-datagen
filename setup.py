@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
-from sys import argv
+from sys import argv, version_info
 from os import path
 from subprocess import call
 
@@ -35,11 +35,23 @@ files = {
          'etc/hydratk/conf.d/hydratk-ext-datagen.conf' : '/etc/hydratk/conf.d'
         }  
 
+packages = find_packages('src')   
+if (not(version_info[0] == 2 and version_info[1] == 7)):
+    exclude = [
+               'hydratk.extensions.datagen.asn1',
+               'hydratk.extensions.datagen.asn1.asn1',
+               'hydratk.extensions.datagen.asn1.core',
+               'hydratk.extensions.datagen.asn1.utils'
+              ]
+     
+    for pck in exclude:
+        del packages[packages.index(pck)] 
+
 entry_points = {
                 'console_scripts': [
                     'datagen = hydratk.extensions.datagen.bootstrapper:run_app'                               
                 ]
-               }                    
+               }          
                 
 setup(
       name='hydratk-ext-datagen',
@@ -50,7 +62,7 @@ setup(
       author_email='bowman@hydratk.org',
       url='http://extensions.hydratk.org/datagen',
       license='BSD',
-      packages=find_packages('src'),
+      packages=packages,
       install_requires=requires,
       package_dir={'' : 'src'},
       classifiers=classifiers,

@@ -1,0 +1,429 @@
+Test-Scenario-1:
+  Id: ts_01
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_init
+  Desc: Test method __init__
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.jsongen import JSONGen
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_init
+    Desc: Initialize JSONGen
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_init
+      Desc: Initialize
+      
+      Test: |
+        g = JSONGen()
+        res = g.__class__.__name__
+      
+      Validate: |
+        this.test_result = res
+        assert (res == 'JSONGen'), '__init__ = JSONGen'
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_props
+  Desc: Test properties
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.jsongen import JSONGen   
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_getters
+    Desc: Getter methods
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_path
+      Desc: Getter path
+      
+      Test: |
+        g = JSONGen()
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        g.import_schema(path)
+        res = g.path
+      
+      Validate: |   
+        this.test_result = res
+        exp = g._path
+        assert(res == exp), 'path = {0}'.format(exp)    
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_schema
+      Desc: Getter schema
+      
+      Test: |
+        res = g.schema
+      
+      Validate: |   
+        this.test_result = str(res)
+        exp = g._schema
+        assert(res == exp), 'schema = {0}'.format(exp)       
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_import_schema
+  Desc: Test method import_schema
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.jsongen import JSONGen
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook  
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_import_schema
+    Desc: Import schema
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_single
+      Desc: Single schema
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['jsongen_before_import_spec', 'jsongen_after_import_spec']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])
+        g = JSONGen()
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        res = g.import_schema(path)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'import_schema = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'import_schema fires {0}'.format(evs)  
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]     
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_multiple
+      Desc: Multiple schema
+      
+      Test: |
+        g._path = g._schema = None
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        res = g.import_schema(path)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'import_schema = True'  
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_path
+      Desc: Invalid file path
+      
+      Test: |
+        res = g.import_schema('xx')
+      
+      Validate: |                  
+        this.test_result = res
+        assert (not res), 'import_schema = False'   
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_schema
+      Desc: Invalid schema
+      
+      Test: |
+        res = g.import_schema('/var/local/hydratk/testenv/crm.xsd')
+      
+      Validate: |                  
+        this.test_result = res
+        assert (not res), 'import_schema = False'    
+        
+Test-Scenario-4:
+  Id: ts_04
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_import_ref_schema
+  Desc: Test method _import_ref_schema
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.jsongen import JSONGen
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_import_ref_schema
+    Desc: Import referenced schema
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_path_uri
+      Desc: Path URI
+      
+      Test: |
+        g = JSONGen()
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        res = g._import_ref_schema(path)
+      
+      Validate: |                   
+        this.test_result = str(res)
+        assert (res != None), '_import_ref_schema is not empty'
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_file_uri
+      Desc: File URI
+      
+      Test: |
+        g = JSONGen()
+        path = 'file:///var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        res = g._import_ref_schema(path)
+      
+      Validate: |                   
+        this.test_result = str(res)
+        assert (res != None), '_import_ref_schema is not empty'     
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_path
+      Desc: Invalid file path
+      
+      Test: |
+        try:
+            g._import_ref_schema('xx')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |                  
+        this.test_result = ex
+        assert (ex), '_import_ref_schema raises ValueError'   
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_schema
+      Desc: Invalid schema
+      
+      Test: |
+        try:
+            g._import_ref_schema('/var/local/hydratk/testenv/crm.xsd')
+            ex = False
+        except ValueError:
+            ex = True
+      
+      Validate: |                  
+        this.test_result = ex
+        assert (ex), '_import_ref_schema raises ValueError'  
+        
+Test-Scenario-5:
+  Id: ts_05
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_to_json_rec
+  Desc: Test method _tojson_rec
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.jsongen import JSONGen
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_json_rec
+    Desc: Generate JSON record
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_number
+      Desc: Number record
+      
+      Test: |
+        g = JSONGen()
+        g._schema = 'xx'
+        schema = {'type': 'number'}
+        res = g._tojson_rec(schema)
+      
+      Validate: |
+        this.test_result = res  
+        exp = '?'            
+        assert (res == exp), '_tojson_rec = {0}'.format(exp)
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_string
+      Desc: String record
+      
+      Test: |
+        schema = {'type': 'string'}
+        res = g._tojson_rec(schema)
+      
+      Validate: |
+        this.test_result = res  
+        exp = '?'            
+        assert (res == exp), '_tojson_rec = {0}'.format(exp)    
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_array
+      Desc: Array record
+      
+      Test: |
+        schema = {'type': 'array', 'items': {'type': 'string'}}
+        res = g._tojson_rec(schema)
+      
+      Validate: |
+        this.test_result = str(res)  
+        exp = ['?']            
+        assert (res == exp), '_tojson_rec = {0}'.format(exp)       
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_object
+      Desc: Object record
+      
+      Test: |
+        schema = {'type': 'object', 'properties': {'latitude': {'type': 'number'}, 'longitude': {'type': 'number'}}}
+        res = g._tojson_rec(schema)
+      
+      Validate: |
+        this.test_result = str(res)  
+        exp = {'latitude': '?', 'longitude': '?'}            
+        assert (res == exp), '_tojson_rec = {0}'.format(exp)  
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_multi_object
+      Desc: Multiple object record
+      
+      Test: |
+        schema = {'type': 'object', 'properties': {'name': {'type': 'string'}, 
+                  'coord': {'type': 'object', 'properties': {'latitude': {'type': 'number'}, 'longitude': {'type': 'number'}}}}}
+        res = g._tojson_rec(schema)
+      
+      Validate: |  
+        this.test_result = str(res)  
+        exp = {'name': '?', 'coord': {'latitude': '?', 'longitude': '?'}}            
+        assert (res == exp), '_tojson_rec = {0}'.format(exp)      
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_schema_not_imported
+      Desc: Schema not imported
+      
+      Test: |
+        try:
+            g = JSONGen()
+            g._tojson_rec('xx')
+            ex = False
+        except ValueError:
+            ex = True        
+      
+      Validate: |   
+        this.test_result = ex
+        assert (ex), '_tojson_rec raises ValueError'   
+        
+Test-Scenario-6:
+  Id: ts_06
+  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Name: ts_tojson
+  Desc: Test method tojson
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.jsongen import JSONGen
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook  
+    from os import path, remove
+    from sys import version_info
+    from simplejson import loads
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_json_rec
+    Desc: Generate JSON record
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_json
+      Desc: Generate JSON record
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['jsongen_before_write', 'jsongen_after_write']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])
+        g = JSONGen()
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        g.import_schema(file)
+        res = g.tojson()
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'tojson = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'tojson fires {0}'.format(evs) 
+        outfile = './sample.json' 
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)     
+        this.test_result = res      
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]  
+        remove(outfile)   
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_outfile
+      Desc: Set outfile
+      
+      Test: |
+        file = '/var/local/hydratk/test.json'
+        res = g.tojson(file)
+      
+      Validate: |           
+       this.test_result = res
+       assert (res), 'tojson = True'
+       this.test_result = res = (path.exists(file))
+       assert (res), 'file {0} created'.format(file)
+       remove(file)    
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = g.tojson('/private/xx')
+      
+      Validate: |                    
+        this.test_result = res
+        assert (not res), 'tojson = False' 
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_schema_not_imported
+      Desc: Schema not imported
+      
+      Test: |
+        g._schema = None
+        res = g.tojson('xx')      
+      
+      Validate: |   
+        this.test_result = res
+        assert (not res), 'tojson = False'             

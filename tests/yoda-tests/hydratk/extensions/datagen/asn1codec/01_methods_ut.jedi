@@ -1,0 +1,433 @@
+Test-Scenario-1:
+  Id: ts_01
+  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Name: ts_init
+  Desc: Test method __init__
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.asn1codec import ASN1Codec
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_init
+    Desc: Initialize ASN1Codec
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_init
+      Desc: Initialize
+      
+      Test: |
+        g = ASN1Codec()
+        res = g.__class__.__name__
+      
+      Validate: |
+        this.test_result = res
+        assert (res == 'ASN1Codec'), '__init__ = ASN1Codec'
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Name: ts_props
+  Desc: Test properties
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.asn1codec import ASN1Codec   
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_getters
+    Desc: Getter methods
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_path
+      Desc: Getter path
+      
+      Test: |
+        g = ASN1Codec()
+        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        g.import_spec(path)
+        res = g.path
+      
+      Validate: |   
+        this.test_result = res
+        exp = g._path
+        assert(res == exp), 'path = {0}'.format(exp)
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_spec
+      Desc: Getter spec              
+        
+      Test: |
+        res = g.spec.__class__.__name__
+      
+      Validate: |   
+        this.test_result = res
+        exp = g._spec.__class__.__name__
+        assert(res == exp), 'spec = {0}'.format(exp)       
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_elements
+      Desc: Getter elements             
+        
+      Test: |
+        res = g.elements
+      
+      Validate: |   
+        this.test_result = str(res)
+        exp = g._elements
+        assert(res == exp), 'elements = {0}'.format(exp)  
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Name: ts_import_spec
+  Desc: Test method import_spec
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.asn1codec import ASN1Codec
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook 
+    from os import remove
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_import_spec
+    Desc: Import specification
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_import
+      Desc: Import ASN.1
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['asn1_before_import_spec', 'asn1_after_import_spec']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])
+        g = ASN1Codec()
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        res = g.import_spec(file)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'import_spec = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'import_spec fires {0}'.format(evs)  
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = g.import_spec('xx')
+      
+      Validate: |                
+        this.test_result = res
+        assert (not res), 'import_spec = False'  
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_spec
+      Desc: Invalid specification
+      
+      Test: |
+        file = './spec.asn'
+        with open(file, 'w') as f:
+            f.write('xx')
+            
+        res = g.import_spec(file)
+      
+      Validate: |                
+        this.test_result = res
+        assert (not res), 'import_spec = False'  
+        remove(file)       
+        
+Test-Scenario-4:
+  Id: ts_04
+  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Name: ts_encode
+  Desc: Test method encode
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.asn1codec import ASN1Codec
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook 
+    from os import path, remove
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_encode
+    Desc: Encode ASN.1 file
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported
+      
+      Test: |
+        g = ASN1Codec()
+        res = g.encode('xx', 'xx')
+      
+      Validate: |
+        this.test_result = res
+        assert (not res), 'encode = False'
+    
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_encode
+      Desc: Encode
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['asn1_before_encode', 'asn1_after_encode']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])        
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        g.import_spec(file)
+        
+        infile = './in.json'
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        with open(infile, 'w') as f:
+            f.write(input)
+            
+        res = g.encode(infile, 'TestSeq2')
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'encode = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'encode fires {0}'.format(evs)
+        outfile = infile[:-4]+'bin'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)        
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]  
+        remove(infile)
+        remove(outfile)  
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_outfile
+      Desc: Set output file
+      
+      Test: |
+        infile = 'in.json'
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        with open(infile, 'w') as f:
+            f.write(input)
+            
+        outfile = './test.bin'    
+        res = g.encode(infile, 'TestSeq2', outfile)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'encode = True'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)         
+        remove(infile)
+        remove(outfile)          
+    
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = g.encode('xx', 'TestSeq2')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (not res), 'encode = False'
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_invalid_json
+      Desc: Invalid JSON file
+      
+      Test: |
+        file = './in.json'
+        with open(file, 'w') as f:
+            f.write('xx')      
+      
+        res = g.encode(file, 'TestSeq2')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (not res), 'encode = False'        
+        remove(file)
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_invalid_elem
+      Desc: Invalid element        
+        
+      Test: |         
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}' 
+        with open(file, 'w') as f:
+            f.write(input)
+            
+        res = g.encode(file, 'xx')
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'encode = False'
+        remove(file)       
+        
+Test-Scenario-5:
+  Id: ts_05
+  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Name: ts_decode
+  Desc: Test method decode
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.core.masterhead import MasterHead
+    from hydratk.extensions.datagen.asn1codec import ASN1Codec
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook 
+    from os import path, remove
+    from string import replace
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_decode
+    Desc: Decode ASN.1 file
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_not_imported
+      Desc: Specification not imported
+      
+      Test: |
+        g = ASN1Codec()
+        res = g.decode('xx', 'xx')
+      
+      Validate: |
+        this.test_result = res
+        assert (not res), 'decode = False'
+    
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_decode
+      Desc: Decode
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['asn1_before_decode', 'asn1_after_decode']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])        
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        g.import_spec(file)
+        
+        infile = './in.json'
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        with open(infile, 'w') as f:
+            f.write(input)            
+        g.encode(infile, 'TestSeq2')
+        remove(infile)
+        infile = './in.bin'
+        
+        res = g.decode(infile, 'TestSeq2')
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'decode = True'
+        res = [events[0]._id, events[1]._id]
+        this.test_result = str(res)
+        assert (res == evs), 'decode fires {0}'.format(evs)
+        outfile = infile[:-3]+'json'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)  
+        
+        with open(outfile, 'r') as f:
+            cont = f.read()
+        cont = replace(cont, '\n', '')
+        cont = replace(cont, ' ', '')
+              
+        this.test_result = cont
+        exp = replace(input, ' ', '')
+        assert (cont == exp), 'output = {0}'.format(exp)
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]   
+        del events[0]
+        del events[0]  
+        remove(outfile) 
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_outfile
+      Desc: Set output file
+      
+      Test: |
+        outfile = './test.json'    
+        res = g.decode(infile, 'TestSeq2', outfile)
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'decode = True'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)         
+        remove(outfile)          
+    
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = g.decode('xx', 'TestSeq2')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (not res), 'decode = False'
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_invalid_bin
+      Desc: Invalid BIN file
+      
+      Test: |
+        file = './test.bin'
+        with open(file, 'w') as f:
+            f.write('xx')      
+      
+        res = g.encode(file, 'TestSeq2')
+      
+      Validate: |                     
+        this.test_result = res
+        assert (not res), 'decode = False'        
+        remove(file)
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_invalid_elem
+      Desc: Invalid element        
+        
+      Test: |         
+        res = g.decode(infile, 'xx')
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'decode = False'
+        remove(infile)                     

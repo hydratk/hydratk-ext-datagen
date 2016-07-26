@@ -27,7 +27,7 @@ class Extension(extension.Extension):
         """         
         
         self._ext_id   = 'datagen'
-        self._ext_name = 'Datagen'
+        self._ext_name = 'DataGen'
         self._ext_version = '0.1.0'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>'
         self._ext_year = '2016'  

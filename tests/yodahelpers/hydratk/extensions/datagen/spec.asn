@@ -1,0 +1,37 @@
+Test1 DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+    
+  TestInt ::= INTEGER {un(1), deux(2)} (0..100, ...)
+  TestEnum ::= ENUMERATED {un , deux, trois}
+  TestBitStr ::= BIT STRING (SIZE(12..24, ...))
+  TestOctetStr ::= OCTET STRING (SIZE(2..10))
+  TestChoice ::= CHOICE {
+    a TestInt,
+    b TestEnum,
+    c TestBitStr
+  }
+  TestSeqOf ::= SEQUENCE SIZE (1..4) OF TestInt
+  TestSeq ::= SEQUENCE {
+    a TestInt,
+    b TestEnum OPTIONAL,
+    c TestBitStr
+  }
+  TestSeqSeq ::= SEQUENCE {
+    a TestSeq,
+    b SEQUENCE OF TestSeq,
+    c TestChoice
+  }
+  TestSeq2 ::= SEQUENCE {
+    a TestInt,
+    b BOOLEAN,
+    c SEQUENCE {
+      d BOOLEAN OPTIONAL,
+      e TestOctetStr
+    },
+    f SET {
+      g TestInt,
+      h BOOLEAN
+    }
+  } 
+         
+END
