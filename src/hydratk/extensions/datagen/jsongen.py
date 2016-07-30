@@ -23,7 +23,7 @@ from hydratk.core import event
 from simplejson import loads, dumps
 from os import path
 
-class JSONGen():
+class JSONGen(object):
     """Class JSONGen
     """
     

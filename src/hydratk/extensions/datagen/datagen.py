@@ -113,13 +113,13 @@ class Extension(extension.Extension):
         self._mh.match_long_option('element', True, 'gen-element', False, option_profile) 
         self._mh.match_long_option('envelope', False, 'gen-envelope', False, option_profile)   
         
-        self._mh.match_cli_option(('c','config'), True, None, False, option_profile)
-        self._mh.match_cli_option(('d','debug'), True, None, False, option_profile)   
-        self._mh.match_cli_option(('e','debug-channel'), True, None, False, option_profile)
-        self._mh.match_cli_option(('l','language'), True, None, False, option_profile)
-        self._mh.match_cli_option(('m','run-mode'), True, None, False, option_profile)
-        self._mh.match_cli_option(('f','force'), False, None, False, option_profile)
-        self._mh.match_cli_option(('i','interactive'), False, None, False, option_profile)                       
+        self._mh.match_cli_option(('c','config'), True, 'config', False, option_profile)
+        self._mh.match_cli_option(('d','debug'), True, 'debug', False, option_profile)   
+        self._mh.match_cli_option(('e','debug-channel'), True, 'debug-channel', False, option_profile)
+        self._mh.match_cli_option(('l','language'), True, 'language', False, option_profile)
+        self._mh.match_cli_option(('m','run-mode'), True, 'run-mode', False, option_profile)
+        self._mh.match_cli_option(('f','force'), False, 'force', False, option_profile)
+        self._mh.match_cli_option(('i','interactive'), False, 'interactive', False, option_profile)                       
         
     def gen_asn1(self):
         """Method handles command gen-asn1

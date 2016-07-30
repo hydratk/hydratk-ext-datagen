@@ -30,3 +30,554 @@ Test-Scenario-1:
         this.test_result = str(res)
         exp = ['datagen', 'DataGen']
         assert (res == exp), '_ext_id, _ext_name = {0}'.format(exp)
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_register_htk_actions
+  Desc: Test method _register_htk_actions
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    import yodalib.hydratk.core.commandopt as commandopt    
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_register_htk_actions
+    Desc: Register Hydra actions
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_register
+      Desc: Register 
+      
+      Test: |
+        th = TestHead()     
+        ext = th._ext['DataGen']  
+        th.clear_cmd()
+        ext._register_htk_actions()
+        res = th._cmd_hooks
+        
+      Validate: |         
+        this.test_result = str(res)
+        exp = ['gen-asn1', 'gen-json', 'gen-xml']
+        assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
+        res = commandopt.long_opt['htk']
+        this.test_result = str(res)
+        exp = ['gen-action', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec']
+        assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)
+        th.clear_cmd()
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_register_standalone_actions
+  Desc: Test method _register_standalone_actions
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    import yodalib.hydratk.core.commandopt as commandopt           
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_register_standalone_actions
+    Desc: Register standalone actions
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_register
+      Desc: Register   
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.clear_cmd()
+        ext._register_standalone_actions()
+        res = th._cmd_hooks
+      
+      Validate: |   
+        this.test_result = str(res)
+        exp = ['asn1', 'json', 'xml']
+        assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)  
+        res = commandopt.long_opt['datagen']
+        this.test_result = str(res)
+        exp = ['action', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 'language', 'output', 'run-mode', 'spec']
+        assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
+        th.clear_cmd()     
+        
+Test-Scenario-4:
+  Id: ts_04
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_register_actions
+  Desc: Test method _register_actions
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    import yodalib.hydratk.core.commandopt as commandopt           
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_register_actions
+    Desc: Register actions
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_htk
+      Desc: Profile htk
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.clear_cmd()
+        th.cli_cmdopt_profile = 'htk'
+        ext._register_actions()
+        res = th._cmd_hooks        
+      
+      Validate: |  
+        this.test_result = str(res)
+        exp = ['gen-asn1', 'gen-json', 'gen-xml']
+        assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
+        res = commandopt.long_opt['htk']
+        this.test_result = str(res)
+        exp = ['gen-action', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec']
+        assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
+        th.clear_cmd()    
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_datagen
+      Desc: Profile datagen
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.clear_cmd()      
+        th.cli_cmdopt_profile = 'datagen'
+        ext._register_actions()
+        res = th._cmd_hooks        
+      
+      Validate: |  
+        this.test_result = str(res)
+        exp = ['asn1', 'json', 'xml']
+        assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
+        res = commandopt.long_opt['datagen']
+        this.test_result = str(res)
+        exp = ['action', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 'language', 'output', 'run-mode', 'spec']
+        assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)           
+        th.clear_cmd()
+        
+Test-Scenario-5:
+  Id: ts_05
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_gen_json
+  Desc: Test method gen_json
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    from os import path, remove         
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_gen_json
+    Desc: Generate JSON sample
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_gen_json
+      Desc: Generate
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'}
+        ext.gen_json()
+        file = './sample.json'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        remove(file)   
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_output
+      Desc: Set output file
+      
+      Test: |
+        file = './test.json'
+        TestHead.options['gen-output'] = file
+        ext.gen_json()
+        res = path.exists(file)
+      
+      Validate: |      
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        remove(file)
+        th.post_replace()
+        th.clear_cmd() 
+        
+  Test-Case-2:
+    Id: tc_02
+    Name: tc_negative
+    Desc: Negative cases      
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_missing_spec
+      Desc: Missing spec param
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {}
+        ext.gen_json()
+        file = './sample.json'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)
+                
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid_spec
+      Desc: Invalid specification
+      
+      Test: |
+        TestHead.options['gen-spec'] = 'xx'
+        ext.gen_json()
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)      
+        th.post_replace() 
+        th.clear_cmd() 
+        
+Test-Scenario-6:
+  Id: ts_06
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_gen_xml
+  Desc: Test method gen_xml
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    from os import path, remove         
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_gen_xml
+    Desc: Generate XML sample
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_gen_xml
+      Desc: Generate
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl', 'gen-element': 'create_service'}
+        ext.gen_xml()
+        file = './sample.xml'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        remove(file)    
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_output
+      Desc: Set output file
+      
+      Test: |
+        file = './test.xml'
+        TestHead.options['gen-output'] = file
+        ext.gen_xml()
+        res = path.exists(file)
+      
+      Validate: |      
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        remove(file) 
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_envelope
+      Desc: Set envelope
+      
+      Test: |
+        TestHead.options['gen-envelope'] = True
+        ext.gen_xml()
+        res = path.exists(file)
+      
+      Validate: |      
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        remove(file)
+        th.post_replace()
+        th.clear_cmd()   
+        
+  Test-Case-2:
+    Id: tc_02
+    Name: tc_negative
+    Desc: Negative cases      
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_missing_spec
+      Desc: Missing spec param
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {}
+        ext.gen_xml()
+        file = './sample.xml'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_missing_element
+      Desc: Missing element param
+      
+      Test: |
+        TestHead.options = {'gen-spec': 'xx'}
+        ext.gen_xml()
+        file = './sample.json'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)        
+                
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_spec
+      Desc: Invalid specification
+      
+      Test: |
+        TestHead.options['gen-element'] = 'xx'
+        ext.gen_xml()
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)      
+        th.post_replace() 
+        th.clear_cmd()   
+        
+Test-Scenario-7:
+  Id: ts_07
+  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Name: ts_gen_asn1
+  Desc: Test method gen_xml
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    from os import path, remove         
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_gen_asn1
+    Desc: Generate ASN.1 record
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_encode
+      Desc: Encode
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {'gen-action': 'encode', 'gen-element': 'TestSeq2', 'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'}
+        
+        TestHead.options['gen-input'] = infile = './in.json'
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        with open(infile, 'w') as f:
+            f.write(input)        
+        
+        ext.gen_asn1()
+        outfile = './in.bin'
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile)
+        remove(outfile) 
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_encode_output
+      Desc: Set encode output
+      
+      Test: |
+        TestHead.options['gen-output'] = outfile = './out.bin'
+        ext.gen_asn1()
+        res = path.exists(outfile)        
+      
+      Validate: |
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile)
+        remove(infile)
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_decode
+      Desc: Decode
+      
+      Test: |
+        infile = outfile
+        TestHead.options['gen-action'], TestHead.options['gen-input'] = 'decode', infile
+        del TestHead.options['gen-output']
+        ext.gen_asn1()
+        outfile = './out.json'
+        res = path.exists(outfile) 
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile)               
+        remove(outfile) 
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_decode_output
+      Desc: Set devode output
+      
+      Test: |
+        TestHead.options['gen-output'] = outfile = './test.json'
+        ext.gen_asn1()
+        res = path.exists(outfile) 
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile) 
+        remove(infile)              
+        remove(outfile)                
+        th.post_replace() 
+        th.clear_cmd()      
+        
+  Test-Case-2:
+    Id: tc_02
+    Name: tc_negative
+    Desc: Negative cases      
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_missing_action
+      Desc: Missing action param
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        infile = 'in.json'
+        TestHead.options = {'gen-input': infile}
+        ext.gen_asn1()
+        outfile = './in.bin'
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile)  
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_invalid_action
+      Desc: Invalid action param
+      
+      Test: |
+        TestHead.options['gen-action'] = 'xx'
+        ext.gen_asn1()
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile) 
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_missing_spec
+      Desc: Missing spec param
+      
+      Test: |
+        TestHead.options['gen-action'] = 'encode'
+        ext.gen_asn1()
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile) 
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_missing_element
+      Desc: Missing element param
+      
+      Test: |
+        TestHead.options['gen-spec'] = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        ext.gen_asn1()
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile)     
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_missing_input
+      Desc: Missing input param
+      
+      Test: |
+        TestHead.options['gen-element'] = 'TestSeq2'
+        del TestHead.options['gen-input']
+        ext.gen_asn1()
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile)   
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_invalid_spec
+      Desc: Invalid specification
+      
+      Test: |
+        TestHead.options['gen-spec'] = 'xx'
+        TestHead.options['gen-input'] = infile = './in.json'
+        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        with open(infile, 'w') as f:
+            f.write(input)        
+        
+        ext.gen_asn1()
+        res = path.exists(outfile)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(outfile) 
+        remove(infile)                             
+        th.post_replace() 
+        th.clear_cmd()                                                                           

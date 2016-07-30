@@ -49,7 +49,7 @@ wsdl_tmpl = """
 </wsdl:definitions>
 """
 
-class XMLGen():
+class XMLGen(object):
     """Class XMLGen
     """
     

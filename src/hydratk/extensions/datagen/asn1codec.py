@@ -34,7 +34,7 @@ if (version_info[0] == 2 and version_info[1] == 7):
     from asn1.asn1.BER import BER
     from collections import OrderedDict
 
-class ASN1Codec():
+class ASN1Codec(object):
     """Class ASN1Codec
     """
     
