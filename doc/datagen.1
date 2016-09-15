@@ -1,0 +1,63 @@
+.TH DATAGEN 1
+.SH NAME
+datagen \- runs DataGen HydraTK extension
+.SH SYNOPSIS
+.B datagen
+[\fBoptions\fR]
+.B command
+.SH DESCRIPTION
+\fBDataGen\fR extension provides utilities for data generation.
+
+Following generators are supported:
+  \fBASN.1\fR - encoder/decoder with ASN.1 specification
+  \fBJSON\fR - sample generator from JSON specification
+  \fBXML\fR - sample generator from WSDL/XSD specification
+.SH COMMANDS
+\fBasn1\fR - encode text file, decode binary file according to ASN.1 specification
+  \fIOptions:\fR
+    \fB--action encode|decode\fR - action
+    \fB--element <title>\fR - element title from specification
+    \fB--input <path>\fR - input filename
+    \fB--spec <path>\fR - specification filename
+    \fB[--output <path>]\fR - output filename, default input filename with changed suffix
+
+\fBhelp\fR - prints help
+
+\fBjson\fR - generate sample json file according to JSON specification
+  \fIOptions:\fR
+    \fB--spec <path>\fR - specification filename
+    \fB[--output <path>]\fR - output filename, default sample.json
+
+\fBxml\fR - generate sample xml file according to WSDL/XSD specification
+  \fIOptions:\fR
+    \fB--element <title>\fR - element title from specification
+    \fB--spec <path>\fR - specification filename
+    \fB[--envelope]\fR - generate including SOAP envelope
+    \fB[--output <path>]\fR - output filename, default sample.xml
+.SH GLOBAL OPTIONS
+\fB-c, --config <file>\fR - reads the alternate configuration file
+
+\fB-d, --debug <level>\fR - debug turned on with specified level > 0
+
+\fB-e, --debug-channel <channel number, ..>\fR - debug channel filter turned on
+
+\fB-f, --force\fR - enforces command
+
+\fB-i, --interactive\fR - turns on interactive mode
+
+\fB-l, --language <language>\fR - sets the text output language, the list of available languages is specified in the docs
+
+\fB-m, --run-mode <mode>\fR - sets the running mode, the list of available modes is specified in the docs
+.SH FILES AND DIRECTORIES
+Configuration file: /etc/hydratk/conf.d/hydratk-ext-datagen.conf
+
+.SH AUTHOR
+Petr Rašek (bowman@hydratk.org), HydraTK Team
+.SH INTERNET RESOURCES
+Main website: https://www.hydratk.org
+
+Documentation: https://www.hydratk.org/docs
+
+Downloads https://pypi.python.org/pypi/hydratk-ext-datagen, https://github.com/hydratk/hydratk-ext-datagen
+.SH LICENSING
+hydratk-ext-datagen is distributed under BSD license. See the file "LICENSE.txt" in the source distribution for information.
