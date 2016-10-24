@@ -54,7 +54,7 @@ class ASN1Codec(object):
         """  
         
         if (not (version_info[0] == 2 and version_info[1] == 7)):
-            raise NotImplementedError('ASN.1 codec is not supported for Python 3.x due to external library libmich')               
+            raise NotImplementedError('ASN.1 codec is not supported for Python 2.6 and 3.x due to external library libmich')               
         
         self._mh = MasterHead.get_head()
     

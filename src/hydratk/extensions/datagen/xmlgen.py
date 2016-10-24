@@ -70,16 +70,16 @@ class XMLGen(object):
         self._mh = MasterHead.get_head()
     
     @property
-    def client(self):
-        """ client property getter """
-        
-        return self._client
-    
-    @property
     def path(self):
         """ path property getter """
         
-        return self._path    
+        return self._path     
+    
+    @property
+    def client(self):
+        """ client property getter """
+        
+        return self._client       
     
     def import_spec(self, filename):
         """Method imports specification
