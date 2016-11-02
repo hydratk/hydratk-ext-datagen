@@ -1,6 +1,6 @@
 Test-Scenario-1:
   Id: ts_01
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_init
   Desc: Test method __init__
   Author: Petr Rasek <bowman@hydratk.org>
@@ -29,7 +29,7 @@ Test-Scenario-1:
         
 Test-Scenario-2:
   Id: ts_02
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_props
   Desc: Test properties
   Author: Petr Rasek <bowman@hydratk.org>
@@ -74,7 +74,7 @@ Test-Scenario-2:
         
 Test-Scenario-3:
   Id: ts_03
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_import_schema
   Desc: Test method import_schema
   Author: Petr Rasek <bowman@hydratk.org>
@@ -155,7 +155,7 @@ Test-Scenario-3:
         
 Test-Scenario-4:
   Id: ts_04
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_import_ref_schema
   Desc: Test method _import_ref_schema
   Author: Petr Rasek <bowman@hydratk.org>
@@ -231,7 +231,7 @@ Test-Scenario-4:
         
 Test-Scenario-5:
   Id: ts_05
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_to_json_rec
   Desc: Test method _tojson_rec
   Author: Petr Rasek <bowman@hydratk.org>
@@ -337,7 +337,7 @@ Test-Scenario-5:
         
 Test-Scenario-6:
   Id: ts_06
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/jsongen/01_methods_ut.jedi
   Name: ts_tojson
   Desc: Test method tojson
   Author: Petr Rasek <bowman@hydratk.org>

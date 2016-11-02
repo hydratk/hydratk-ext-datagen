@@ -1,0 +1,98 @@
+Test-Scenario-1:
+  Id: ts_01
+  Path: hydratk/extensions/datagen/serializer/01_methods_ut.jedi
+  Name: ts_tostr
+  Desc: Test method tostr
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.serializer import Serializer
+    import yodahelpers.hydratk.extensions.datagen.serialization as s
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_tostr
+    Desc: String serialization
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_ser
+      Desc: Serialize
+      
+      Test: |
+        res = Serializer.tostr(s.tst())
+      
+      Validate: |
+        this.test_result = res
+        exp = s.tst_str
+        assert (res == exp), 'tostr = {0}'.format(exp)
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/datagen/serializer/01_methods_ut.jedi
+  Name: ts_toxml
+  Desc: Test method toxml
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.serializer import Serializer
+    import yodahelpers.hydratk.extensions.datagen.serialization as s
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_toxml
+    Desc: XML serialization
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_ser
+      Desc: Serialize
+      
+      Test: |
+        res = Serializer.toxml(s.tst(), True)
+      
+      Validate: |
+        this.test_result = res
+        exp = s.tst_xml
+        assert (res == exp), 'toxml = {0}'.format(exp)
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/datagen/serializer/01_methods_ut.jedi
+  Name: ts_tojson
+  Desc: Test method tojson
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.serializer import Serializer
+    import yodahelpers.hydratk.extensions.datagen.serialization as s
+    from sys import version_info
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_tojson
+    Desc: JSON serialization
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_ser
+      Desc: Serialize
+      
+      Test: |
+        try:
+            res = Serializer.tojson(s.tst())
+            ex = False
+        except NotImplementedError:
+            ex = True
+      
+      Validate: |
+        if (version_info[0] == 2 and version_info[1] == 6):
+            this.test_result = ex
+            assert (ex), 'tojson raises NotImplementError'
+        else:
+            this.test_result = res
+            exp = s.tst_json
+            assert (res == exp), 'tojson = {0}'.format(exp)                

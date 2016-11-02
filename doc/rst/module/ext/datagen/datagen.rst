@@ -12,3 +12,4 @@ This section contains module documentation of DataGen extension.
    jsongen
    xmlgen
    asn1codec
+   serializer

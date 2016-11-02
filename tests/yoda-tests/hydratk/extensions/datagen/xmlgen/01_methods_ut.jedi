@@ -1,6 +1,6 @@
 Test-Scenario-1:
   Id: ts_01
-  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_init
   Desc: Test method __init__
   Author: Petr Rasek <bowman@hydratk.org>
@@ -29,7 +29,7 @@ Test-Scenario-1:
         
 Test-Scenario-2:
   Id: ts_02
-  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_props
   Desc: Test properties
   Author: Petr Rasek <bowman@hydratk.org>
@@ -74,7 +74,7 @@ Test-Scenario-2:
         
 Test-Scenario-3:
   Id: ts_03
-  Path: hydratk/extensions/xmlgen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_create_dummy_wsdl
   Desc: Test method _create_dummy_wsdl
   Author: Petr Rasek <bowman@hydratk.org>
@@ -145,7 +145,7 @@ Test-Scenario-3:
         
 Test-Scenario-4:
   Id: ts_04
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_import_spec
   Desc: Test method import_spec
   Author: Petr Rasek <bowman@hydratk.org>
@@ -248,7 +248,7 @@ Test-Scenario-4:
         
 Test-Scenario-5:
   Id: ts_05
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_get_element_type
   Desc: Test method _get_element_type
   Author: Petr Rasek <bowman@hydratk.org>
@@ -306,7 +306,7 @@ Test-Scenario-5:
         
 Test-Scenario-6:
   Id: ts_06
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_get_element_ns
   Desc: Test method _get_element_ns
   Author: Petr Rasek <bowman@hydratk.org>
@@ -365,7 +365,7 @@ Test-Scenario-6:
         
 Test-Scenario-7:
   Id: ts_07
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_toxml_rec
   Desc: Test method _toxml_rec
   Author: Petr Rasek <bowman@hydratk.org>
@@ -428,7 +428,7 @@ Test-Scenario-7:
         
 Test-Scenario-8:
   Id: ts_08
-  Path: hydratk/extensions/jsongen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/xmlgen/01_methods_ut.jedi
   Name: ts_toxml
   Desc: Test method toxml
   Author: Petr Rasek <bowman@hydratk.org>

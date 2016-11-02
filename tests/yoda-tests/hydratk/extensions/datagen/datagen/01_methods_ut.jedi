@@ -1,6 +1,6 @@
 Test-Scenario-1:
   Id: ts_01
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_init_extension
   Desc: Test _init_extension method
   Author: Petr Rasek <bowman@hydratk.org>
@@ -33,7 +33,7 @@ Test-Scenario-1:
         
 Test-Scenario-2:
   Id: ts_02
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_register_htk_actions
   Desc: Test method _register_htk_actions
   Author: Petr Rasek <bowman@hydratk.org>
@@ -72,7 +72,7 @@ Test-Scenario-2:
         
 Test-Scenario-3:
   Id: ts_03
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_register_standalone_actions
   Desc: Test method _register_standalone_actions
   Author: Petr Rasek <bowman@hydratk.org>
@@ -111,7 +111,7 @@ Test-Scenario-3:
         
 Test-Scenario-4:
   Id: ts_04
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_register_actions
   Desc: Test method _register_actions
   Author: Petr Rasek <bowman@hydratk.org>
@@ -174,7 +174,7 @@ Test-Scenario-4:
         
 Test-Scenario-5:
   Id: ts_05
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_gen_json
   Desc: Test method gen_json
   Author: Petr Rasek <bowman@hydratk.org>
@@ -266,7 +266,7 @@ Test-Scenario-5:
         
 Test-Scenario-6:
   Id: ts_06
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_gen_xml
   Desc: Test method gen_xml
   Author: Petr Rasek <bowman@hydratk.org>
@@ -388,7 +388,7 @@ Test-Scenario-6:
         
 Test-Scenario-7:
   Id: ts_07
-  Path: hydratk/extensions/datagen/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
   Name: ts_gen_asn1
   Desc: Test method gen_xml
   Author: Petr Rasek <bowman@hydratk.org>

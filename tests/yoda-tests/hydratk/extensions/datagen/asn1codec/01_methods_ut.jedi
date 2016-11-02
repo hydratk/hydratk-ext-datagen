@@ -1,6 +1,6 @@
 Test-Scenario-1:
   Id: ts_01
-  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/asn1codec/01_methods_ut.jedi
   Name: ts_init
   Desc: Test method __init__
   Author: Petr Rasek <bowman@hydratk.org>
@@ -29,7 +29,7 @@ Test-Scenario-1:
         
 Test-Scenario-2:
   Id: ts_02
-  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/asn1codec/01_methods_ut.jedi
   Name: ts_props
   Desc: Test properties
   Author: Petr Rasek <bowman@hydratk.org>
@@ -87,7 +87,7 @@ Test-Scenario-2:
         
 Test-Scenario-3:
   Id: ts_03
-  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/asn1codec/01_methods_ut.jedi
   Name: ts_import_spec
   Desc: Test method import_spec
   Author: Petr Rasek <bowman@hydratk.org>
@@ -160,7 +160,7 @@ Test-Scenario-3:
         
 Test-Scenario-4:
   Id: ts_04
-  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/asn1codec/01_methods_ut.jedi
   Name: ts_encode
   Desc: Test method encode
   Author: Petr Rasek <bowman@hydratk.org>
@@ -296,7 +296,7 @@ Test-Scenario-4:
         
 Test-Scenario-5:
   Id: ts_05
-  Path: hydratk/extensions/asn1codec/01_methods_ut.jedi
+  Path: hydratk/extensions/datagen/asn1codec/01_methods_ut.jedi
   Name: ts_decode
   Desc: Test method decode
   Author: Petr Rasek <bowman@hydratk.org>

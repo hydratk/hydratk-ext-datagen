@@ -17,3 +17,4 @@ Following generators are supported.
    tut1_asn1
    tut2_json
    tut3_xml
+   tut4_serializer
