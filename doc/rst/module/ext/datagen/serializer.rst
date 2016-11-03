@@ -70,6 +70,7 @@ Method serializes given object instance to xml string, it uses lxml method tostr
 * tojson
 
 Method serializes given object instance to json string, it uses simplejson method dumps with indentation. 
+It is not supported for Python 2.6 (missing OrderedDict), raises NotImplementedError.
 
   .. code-block:: python
      
