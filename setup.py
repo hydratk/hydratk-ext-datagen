@@ -57,11 +57,11 @@ entry_points = {
                 
 setup(
       name='hydratk-ext-datagen',
-      version='0.1.1a.dev1',
+      version='0.1.1',
       description='Utilities for data generation',
       long_description=readme,
-      author='Petr Rašek',
-      author_email='bowman@hydratk.org',
+      author='Petr Rašek, HydraTK team',
+      author_email='bowman@hydratk.org, team@hydratk.org',
       url='http://extensions.hydratk.org/datagen',
       license='BSD',
       packages=packages,
@@ -81,4 +81,4 @@ if ('install' in argv or 'bdist_egg' in argv or 'bdist_wheel' in argv):
         call('cp {0} {1}'.format(file, dir), shell=True) 
         
     call('chmod -R a+r /etc/hydratk', shell=True)
-    call('gzip -c doc/datagen.1 > /usr/local/share/man/man1/datagen.1', shell=True)
+    call('gzip -c doc/datagen.1 > /usr/share/man/man1/datagen.1', shell=True)
