@@ -8,7 +8,8 @@
 
 """
 
-from hydratk.core import extension
+from sys import exit
+from hydratk.core import extension, bootstrapper
 from hydratk.lib.console.commandlinetool import CommandlineTool
 
 class Extension(extension.Extension):
@@ -31,6 +32,33 @@ class Extension(extension.Extension):
         self._ext_version = '0.1.1'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>'
         self._ext_year = '2016'  
+        
+        if (not self._check_dependencies()):
+            exit(0)
+        
+    def _check_dependencies(self):
+        """Method checks dependent modules
+        
+        Args:            
+           none
+           
+        Returns:
+           bool    
+                
+        """         
+        
+        dep_modules = {
+          'hydratk'             : {
+                                   'min-version' : '0.4.0', 
+                                   'package'     : 'hydratk'
+                                  },
+          'hydratk.lib.network' : {
+                                   'min-version' : '0.2.0', 
+                                   'package'     : 'hydratk-lib-network'
+                                  }      
+        }  
+        
+        return bootstrapper._check_dependencies(dep_modules, 'hydratk-ext-datagen')     
         
     def _register_actions(self):
         """Method registers actions

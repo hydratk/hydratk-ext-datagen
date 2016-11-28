@@ -57,7 +57,7 @@ entry_points = {
                 
 setup(
       name='hydratk-ext-datagen',
-      version='0.1.1',
+      version='0.1.2a.dev1',
       description='Utilities for data generation',
       long_description=readme,
       author='Petr Rašek, HydraTK team',
@@ -69,7 +69,10 @@ setup(
       package_dir={'' : 'src'},
       classifiers=classifiers,
       zip_safe=False,  
-      entry_points=entry_points 
+      entry_points=entry_points,
+      keywords='hydratk,data generation,json,xml,asn.1',
+      requires_python='>=2.6,!=3.0.*,!=3.1.*,!=3.2.*',
+      platforms='Linux' 
      )
 
 if ('install' in argv or 'bdist_egg' in argv or 'bdist_wheel' in argv):
