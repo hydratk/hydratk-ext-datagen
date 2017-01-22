@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 from sys import argv, version_info
-import hydratk.lib.install.command as cmd
 import hydratk.lib.install.task as task
 
 with open("README.rst", "r") as f:
@@ -72,7 +71,7 @@ entry_points = {
                     'datagen = hydratk.extensions.datagen.bootstrapper:run_app'                               
                 ]
                }          
-                
+                 
 setup(
       name='hydratk-ext-datagen',
       version='0.1.2a.dev2',
