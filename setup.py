@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.3",
     "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: Implementation",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
@@ -74,7 +75,7 @@ entry_points = {
                  
 setup(
       name='hydratk-ext-datagen',
-      version='0.1.2a.dev2',
+      version='0.1.2a.dev3',
       description='Utilities for data generation',
       long_description=readme,
       author='Petr Rašek, HydraTK team',
