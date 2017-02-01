@@ -29,7 +29,7 @@ class Extension(extension.Extension):
         
         self._ext_id   = 'datagen'
         self._ext_name = 'DataGen'
-        self._ext_version = '0.1.1'
+        self._ext_version = '0.1.2'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>'
         self._ext_year = '2016-2017'  
         
@@ -108,11 +108,13 @@ class Extension(extension.Extension):
         self._mh.match_cli_command('gen-asn1')
         self._mh.match_cli_command('gen-json') 
         self._mh.match_cli_command('gen-xml')
+        self._mh.match_cli_command('gen-selenium')
          
         hook = [
                 {'command' : 'gen-asn1', 'callback' : self.gen_asn1},
                 {'command' : 'gen-json', 'callback' : self.gen_json},
-                {'command' : 'gen-xml', 'callback' : self.gen_xml}
+                {'command' : 'gen-xml', 'callback' : self.gen_xml},
+                {'command' : 'gen-selenium', 'callback' : self.gen_selenium}
                ]  
         self._mh.register_command_hook(hook)  
         
@@ -121,7 +123,9 @@ class Extension(extension.Extension):
         self._mh.match_long_option('gen-output', True, 'gen-output')
         self._mh.match_long_option('gen-action', True, 'gen-action')  
         self._mh.match_long_option('gen-element', True, 'gen-element') 
-        self._mh.match_long_option('gen-envelope', False, 'gen-envelope')   
+        self._mh.match_long_option('gen-envelope', False, 'gen-envelope')  
+        self._mh.match_long_option('gen-browser', True, 'gen-browser') 
+        self._mh.match_long_option('gen-timeout', True, 'gen-timeout')  
         
     def _register_standalone_actions(self):
         """Method registers command hooks for standalone mode
@@ -142,11 +146,13 @@ class Extension(extension.Extension):
         self._mh.match_cli_command('asn1', option_profile)
         self._mh.match_cli_command('json', option_profile)
         self._mh.match_cli_command('xml', option_profile)
+        self._mh.match_cli_command('selenium', option_profile)
          
         hook = [
                 {'command' : 'asn1', 'callback' : self.gen_asn1},
                 {'command' : 'json', 'callback' : self.gen_json},
-                {'command' : 'xml', 'callback' : self.gen_xml}
+                {'command' : 'xml', 'callback' : self.gen_xml},
+                {'command' : 'selenium', 'callback' : self.gen_selenium}
                ]  
         self._mh.register_command_hook(hook) 
         
@@ -157,7 +163,9 @@ class Extension(extension.Extension):
         self._mh.match_long_option('output', True, 'gen-output', False, option_profile)
         self._mh.match_long_option('action', True, 'gen-action', False, option_profile)  
         self._mh.match_long_option('element', True, 'gen-element', False, option_profile) 
-        self._mh.match_long_option('envelope', False, 'gen-envelope', False, option_profile)   
+        self._mh.match_long_option('envelope', False, 'gen-envelope', False, option_profile)  
+        self._mh.match_long_option('browser', True, 'gen-browser', False, option_profile) 
+        self._mh.match_long_option('timeout', True, 'gen-timeout', False, option_profile)                  
         
         self._mh.match_cli_option(('c','config'), True, 'config', False, option_profile)
         self._mh.match_cli_option(('d','debug'), True, 'debug', False, option_profile)   
@@ -287,4 +295,42 @@ class Extension(extension.Extension):
                 else:
                     print('Sample generated')   
             else:
-                print('Import specification error')                                   
+                print('Import specification error')    
+                
+    def gen_selenium(self):
+        """Method handles command gen-selenium
+        
+        Adapt Selenium script to Yoda format
+        
+        Args:
+           none
+        
+        Returns:
+           void                  
+                
+        """         
+        
+        self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_received_cmd', 'gen-selenium'), self._mh.fromhere())
+        
+        input = CommandlineTool.get_input_option('gen-input')
+        output = CommandlineTool.get_input_option('gen-output')
+        browser = CommandlineTool.get_input_option('gen-browser')
+        timeout = CommandlineTool.get_input_option('gen-timeout')
+        
+        if (not input):
+            print('Missing option input')
+        else:           
+        
+            from hydratk.extensions.datagen.adapters.selenium.adapter import Adapter 
+           
+            a = Adapter()
+            if (browser):
+                a.browser = browser
+            if (timeout):
+                a.timeout = timeout
+                
+            output = None if (not output) else output            
+            if (a.parse_test_suite(input, output)):                                
+                print('Script adapted')    
+            else:
+                print('Script adaption error')                                                                                  

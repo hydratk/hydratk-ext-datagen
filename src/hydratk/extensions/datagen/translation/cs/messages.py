@@ -30,5 +30,11 @@ msg = {
     'datagen_xmlgen_import_spec'     : ["Importuji XML specifikaci: '{0}'"],
     'datagen_xmlgen_spec_imported'   : ["XML specifikace importována"],
     'datagen_xmlgen_write_sample'    : ["Vytvářím vzorový XML dokument"],
-    'datagen_xmlgen_sample_written'  : ["Vzorek zapsán do souboru: '{0}'"]               
+    'datagen_xmlgen_sample_written'  : ["Vzorek zapsán do souboru: '{0}'"],
+    'datagen_adapter_parsing_suite'  : ["Parsuji suite ze souboru: '{0}'"],  
+    'datagen_adapter_suite_parsed'   : ["Suite úspěšně parsován"], 
+    'datagen_adapter_parsing_test'   : ["Parsuji test ze soubory: '{0}'"], 
+    'datagen_adapter_test_parsed'    : ["Test úspěšně parsován"],
+    'datagen_adapter_cmd_unknown'    : ["Detekován neznámý příkaz '{0}'"],  
+    'datagen_adapter_cmd_dummy'      : ["Detekován nepodporovaný příkaz '{0}'"]                            
 }

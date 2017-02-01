@@ -62,11 +62,11 @@ Test-Scenario-2:
         
       Validate: |         
         this.test_result = str(res)
-        exp = ['gen-asn1', 'gen-json', 'gen-xml']
+        exp = ['gen-asn1', 'gen-json', 'gen-selenium', 'gen-xml']
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec', 'gen-timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)
         th.clear_cmd()
         
@@ -101,11 +101,12 @@ Test-Scenario-3:
       
       Validate: |   
         this.test_result = str(res)
-        exp = ['asn1', 'json', 'xml']
+        exp = ['asn1', 'json', 'selenium', 'xml']
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)  
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 'language', 'output', 'run-mode', 'spec']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
+               'language', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()     
         
@@ -141,11 +142,11 @@ Test-Scenario-4:
       
       Validate: |  
         this.test_result = str(res)
-        exp = ['gen-asn1', 'gen-json', 'gen-xml']
+        exp = ['gen-asn1', 'gen-json', 'gen-selenium', 'gen-xml']
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec', 'gen-timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()    
         
@@ -164,11 +165,12 @@ Test-Scenario-4:
       
       Validate: |  
         this.test_result = str(res)
-        exp = ['asn1', 'json', 'xml']
+        exp = ['asn1', 'json', 'selenium', 'xml']
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 'language', 'output', 'run-mode', 'spec']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
+               'language', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)           
         th.clear_cmd()
         
@@ -580,4 +582,85 @@ Test-Scenario-7:
         assert (not res), 'file {0} not created'.format(outfile) 
         remove(infile)                             
         th.post_replace() 
-        th.clear_cmd()                                                                           
+        th.clear_cmd()  
+        
+Test-Scenario-8:
+  Id: ts_08
+  Path: hydratk/extensions/datagen/datagen/01_methods_ut.jedi
+  Name: ts_gen_selenium
+  Desc: Test method gen_selenium
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from yodalib.hydratk.core.testhead import TestHead
+    from os import path, remove         
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_gen_selenium
+    Desc: Adapt Selenium script
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_gen_selenium
+      Desc: Adapt
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {'gen-input': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/selenium_suite.html',
+                            'gen-browser': 'Firefox', 'gen-timeout': '5'}
+        ext.gen_selenium()
+        file = './Test Suite.jedi'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)        
+        remove(file)   
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_output
+      Desc: Set output file
+      
+      Test: |
+        file = '/var/local/hydratk/yoda/test.jedi'
+        TestHead.options['gen-output'] = file
+        ext.gen_selenium()
+        res = path.exists(file)
+      
+      Validate: |      
+        this.test_result = res
+        assert (res), 'file {0} created'.format(file)
+        self.exec_test(file)
+        remove(file)
+        th.post_replace()
+        th.clear_cmd() 
+        
+  Test-Case-2:
+    Id: tc_02
+    Name: tc_negative
+    Desc: Negative cases      
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_missing_spec
+      Desc: Missing spec param
+      
+      Test: |
+        th = TestHead()
+        ext = th._ext['DataGen']
+        th.pre_replace()
+        TestHead.options = {}
+        ext.gen_selenium()
+        file = './sample.html'
+        res = path.exists(file)
+        
+      Validate: |
+        this.test_result = res
+        assert (not res), 'file {0} not created'.format(file)    
+        th.post_replace() 
+        th.clear_cmd()                                                                                  

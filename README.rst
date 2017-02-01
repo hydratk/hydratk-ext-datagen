@@ -9,3 +9,4 @@ README for HydraTK DataGen extension
 * ASN.1: encoder/decoder with ASN.1 specification
 * JSON: sample generator from JSON specification
 * XML: sample generator from WSDL/XSD specification
+* Selenium: adapter of Selenium scripts to Yoda format

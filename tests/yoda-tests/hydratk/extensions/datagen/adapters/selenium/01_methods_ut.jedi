@@ -1,0 +1,211 @@
+Test-Scenario-1:
+  Id: ts_01
+  Path: hydratk/extensions/datagen/adapters/selenium/01_methods_ut.jedi
+  Name: ts_init
+  Desc: Test method __init__
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.adapters.selenium.adapter import Adapter
+  
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_init
+    Desc: Initialize Adapter
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_init
+      Desc: Initialize
+      
+      Test: |
+        a = Adapter()
+        res = a.__class__.__name__
+      
+      Validate: |
+        this.test_result = res
+        assert (res == 'Adapter'), '__init__ = Adapter'      
+        
+Test-Scenario-2:
+  Id: ts_02
+  Path: hydratk/extensions/datagen/adapters/selenium/01_methods_ut.jedi
+  Name: ts_props
+  Desc: Test properties
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.adapters.selenium.adapter import Adapter   
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_getters
+    Desc: Getter methods
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_suite
+      Desc: Getter suite
+      
+      Test: |
+        a = Adapter()
+        res = a.suite
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._suite
+        assert(res == exp), '_suite = {0}'.format(exp)    
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_tests
+      Desc: Getter tests
+      
+      Test: |
+        res = a.tests
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._tests
+        assert(res == exp), '_tests = {0}'.format(exp)   
+
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_browser
+      Desc: Getter broswer
+      
+      Test: |
+        res = a.browser
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._browser
+        assert(res == exp), '_browser = {0}'.format(exp)
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_timeout
+      Desc: Getter timeout
+      
+      Test: |
+        res = a.timeout
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._timeout
+        assert(res == exp), '_timeout = {0}'.format(exp) 
+        
+  Test-Case-2:
+    Id: tc_02
+    Name: tc_setters
+    Desc: Setter methods
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_browser
+      Desc: Setter browser
+      
+      Test: |
+        a = Adapter()
+        obj = 'test'
+        a.browser = obj
+        res = a.browser
+      
+      Validate: |   
+        this.test_result = res
+        assert(res == obj), 'browser = {0}'.format(obj)        
+    
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_timeout
+      Desc: Setter timeout
+      
+      Test: |
+        a.timeout = obj
+        res = a.timeout
+      
+      Validate: |   
+        this.test_result = res
+        assert(res == obj), 'timeout = {0}'.format(obj)       
+        
+Test-Scenario-3:
+  Id: ts_03
+  Path: hydratk/extensions/datagen/adapters/selenium/01_methods_ut.jedi
+  Name: ts_parse_test_suite
+  Desc: Test method parse_test_suite
+  Author: Petr Rasek <bowman@hydratk.org>
+  Version: 0.1
+  
+  Pre-Req: |
+    from hydratk.extensions.datagen.adapters.selenium.adapter import Adapter   
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook  
+    from os import path, remove
+    
+  Test-Case-1:
+    Id: tc_01
+    Name: tc_parse
+    Desc: Parse suite
+    
+    Test-Condition-1: 
+      Id: tco_01
+      Name: tco_parse
+      Desc: Parse                          
+      
+      Test: |
+        mh = MasterHead.get_head()
+        evs = ['adapter_before_parse_suite', 'adapter_before_parse_test', 'adapter_after_parse_test', 'adapter_after_parse_suite']
+        reg_ev_hook(mh, evs[0])
+        reg_ev_hook(mh, evs[1])      
+        reg_ev_hook(mh, evs[2]) 
+        reg_ev_hook(mh, evs[3]) 
+        a = Adapter()
+        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/selenium_suite.html'
+        res = a.parse_test_suite(file)
+      
+      Validate: |
+        this.test_result = res
+        assert (res), 'parse_test_suite = True'  
+        outfile = './Test Suite.jedi'
+        this.test_result = res = (path.exists(outfile))
+        assert (res), 'file {0} created'.format(outfile)
+        remove(outfile)            
+        res = [events[0]._id, events[1]._id, events[2]._id, events[3]._id]
+        this.test_result = str(res)        
+        assert (res == evs), 'parse_test_suite fires {0}'.format(evs)  
+        del mh._event_hooks[evs[0]]
+        del mh._event_hooks[evs[1]]
+        del mh._event_hooks[evs[2]]
+        del mh._event_hooks[evs[3]]   
+        del events[0]
+        del events[0] 
+        del events[0]   
+        del events[0]   
+        
+    Test-Condition-2: 
+      Id: tco_02
+      Name: tco_outfile
+      Desc: Set outfile
+      
+      Test: |
+        outfile = '/var/local/hydratk/test.jedi'
+        res = a.parse_test_suite(file, outfile)
+      
+      Validate: |           
+       this.test_result = res
+       assert (res), 'parse_test_suite = True'
+       this.test_result = res = (path.exists(outfile))
+       assert (res), 'file {0} created'.format(outfile)
+       remove(outfile)    
+        
+    Test-Condition-3: 
+      Id: tco_03
+      Name: tco_invalid_file
+      Desc: Invalid file
+      
+      Test: |
+        res = a.parse_test_suite('/private/xx')
+      
+      Validate: |                    
+        this.test_result = res
+        assert (not res), 'parse_test_suite = False'                

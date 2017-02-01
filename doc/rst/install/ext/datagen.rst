@@ -166,12 +166,19 @@ Type man datagen to display manual page.
               --gen-spec <path> - specification filename
              [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
 
+        gen-selenium - adapt Selenium script to Yoda format
+           Options:
+              --gen-input <path> - input filename
+              [--gen-browser <title>] - browser to be used, default Firefox
+              [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
+              [--gen-timeout <number>] - timeout for wait commands, default 10
+
         gen-xml - generate sample xml file according to WSDL/XSD specification
            Options:
               --gen-element <title> - element title from specification
               --gen-spec <path> - specification filename
              [--gen-envelope] - generate including SOAP envelope
-             [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
+             [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml                          
 
            
 You can run DataGen also in standalone mode.  
@@ -198,6 +205,13 @@ You can run DataGen also in standalone mode.
            Options:
               --spec <path> - specification filename
               [--output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
+              
+        selenium - adapt Selenium script to Yoda format
+           Options:
+              --input <path> - input filename
+              [--browser <title>] - browser to be used, default Firefox
+              [--output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
+              [--timeout <number>] - timeout for wait commands, default 10              
 
         xml - generate sample xml file according to WSDL/XSD specification
            Options:

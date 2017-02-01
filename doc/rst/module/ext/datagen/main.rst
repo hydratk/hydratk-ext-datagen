@@ -40,8 +40,8 @@ Methods registers actions hooks according to profile htk (default mode) or datag
 
 Method registers action hooks for default mode.
 
-commands - gen-asn1, gen-json, gen-xml
-long options - gen-spec, gen-input, gen-output, gen-action, gen-element, gen-envelope
+commands - gen-asn1, gen-json, gen-xml, gen-selenium
+long options - gen-spec, gen-input, gen-output, gen-action, gen-element, gen-envelope, gen-browser, gen-timeout
 
 * _register_standalone_actions
 
@@ -49,7 +49,7 @@ Method registers action hooks for standalone mode.
 
 commands - asn1, json, xml, help
 long options - spec, input, output, action, element, envelope
-blobal options - config, debug, debug-channel, language, run-mode, force, interactive
+global options - config, debug, debug-channel, language, run-mode, force, interactive
 
 * gen_json
 
@@ -96,6 +96,18 @@ Creates ASN1Codec object instance, imports specification (method import_spec) an
          
      datagen --action decode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.bin
              --output out.json
+
+* gen_selenium
+
+Method handles command gen-selenium. It uses options gen-input (Selenium script filename, mandatory), gen-output (output filename, optional),
+gen-browser (used browser, default Firefox, optional), gen-timeout (timeout for wait commands, default 10, optional).
+Creates Adapter object instance and adapts Selenium script to Yoda format (method parse_test_suite).
+
+  .. code-block:: bash
+  
+     htk --gen-input test.html --gen-output tes.jedi --gen-browser PhantomJS --gen-timeout 5 gen-selenium
+     
+     datagen --input test.html --output test.jedi --browser PhantomJS --timeout 5 selenium
 
 configuration
 ^^^^^^^^^^^^^

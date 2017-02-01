@@ -52,3 +52,11 @@ serializer
 
 .. automodule:: hydratk.extensions.datagen.serializer
    :member-order: bysource      
+   
+.. _refman_ext_datagen_selenium:     
+   
+selenium
+^^^^^^^^
+
+.. automodule:: hydratk.extensions.datagen.adapters.selenium.adapter
+   :member-order: bysource     

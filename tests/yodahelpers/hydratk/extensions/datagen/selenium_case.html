@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/Autobot" />
+<title>test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotBodyText</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotBodyText</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertLocation</td>
+	<td>http://localhost:8080/Autobot/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>http://localhost:8080/Autobot/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotLocation</td>
+	<td>http://localhost:8080</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotLocation</td>
+	<td>http://localhost:8080</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>id=test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>//xxx</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//input[@id=&quot;customerId&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertNotAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>verifyNotAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>id=customerId</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>verifyNotText</td>
+	<td>id=customerId</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotTitle</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotTitle</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>verifyXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>assertNotXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>verifyNotXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>chooseCancelOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmationAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotAlert</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotAlert</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmationNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmationNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotConfirmation</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotConfirmation</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotChecked</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotChecked</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotValue</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyNotValue</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotBodyText</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForConfirmationNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>waitForNotAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>id=customer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForLocation</td>
+	<td>http://localhost:8080/Autobot/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotLocation</td>
+	<td>http://localhost:8080</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotChecked</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotText</td>
+	<td>id=customerId</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>waitForTitle</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotTitle</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>waitForNotXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>refresh</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>refreshAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>goBack</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>goBackAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>checkAndWait</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>uncheck</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>uncheckAndWait</td>
+	<td>id=customerId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>id=customerName</td>
+	<td>Charlie</td>
+</tr>
+<tr>
+	<td>sendKeysAndWait</td>
+	<td>id=customerBirthNo</td>
+	<td>700101/0001</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=customerRegNo</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>id=customerTaxNo</td>
+	<td>CZ12345</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//div[@id=&quot;customerStatus&quot;]/select</td>
+	<td>active</td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>//div[@id=&quot;customerSegment&quot;]/select</td>
+	<td>RES</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=customerCreate</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=customerRead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=customerRead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>submitAndWait</td>
+	<td>id=customerRead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>test</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>id=customerId@aria-required</td>
+	<td>attr</td>
+</tr>
+<tr>
+	<td>storeBodyText</td>
+	<td>body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeChecked</td>
+	<td>id=customerId</td>
+	<td>check</td>
+</tr>
+<tr>
+	<td>storeLocation</td>
+	<td>location</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeTitle</td>
+	<td>title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=customerId</td>
+	<td>val</td>
+</tr>
+<tr>
+	<td>storeVisible</td>
+	<td>id=customerId</td>
+	<td>visible</td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>id=customerId</td>
+	<td>present</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>id=customerId</td>
+	<td>text</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>//div[@role=&quot;button&quot;]</td>
+	<td>xpath</td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

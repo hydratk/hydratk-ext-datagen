@@ -13,3 +13,4 @@ This section contains module documentation of DataGen extension.
    xmlgen
    asn1codec
    serializer
+   selenium
