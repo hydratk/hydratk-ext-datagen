@@ -1,0 +1,11 @@
+hydratk/extensions/datagen/bootstrapper
+hydratk/extensions/datagen/jsongen
+hydratk/extensions/datagen/serializer
+hydratk/extensions/datagen/xmlgen
+hydratk/extensions/datagen/adapters/selenium
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_01
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_02
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_03
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_04
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_05
+hydratk/extensions/datagen/datagen/01_methods_ut.jedi:ts_06
