@@ -1,4 +1,3 @@
-hydratk/extensions/datagen/bootstrapper
 hydratk/extensions/datagen/jsongen
 hydratk/extensions/datagen/serializer
 hydratk/extensions/datagen/xmlgen
