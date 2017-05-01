@@ -12,6 +12,17 @@ from sys import exit
 from hydratk.core import extension, bootstrapper
 from hydratk.lib.console.commandlinetool import CommandlineTool
 
+dep_modules = {
+  'hydratk'             : {
+                           'min-version' : '0.4.0', 
+                           'package'     : 'hydratk'
+                          },
+  'hydratk.lib.network' : {
+                           'min-version' : '0.2.0', 
+                           'package'     : 'hydratk-lib-network'
+                          }      
+}  
+
 class Extension(extension.Extension):
     """Class Extension
     """
@@ -45,18 +56,7 @@ class Extension(extension.Extension):
         Returns:
            bool    
                 
-        """         
-        
-        dep_modules = {
-          'hydratk'             : {
-                                   'min-version' : '0.4.0', 
-                                   'package'     : 'hydratk'
-                                  },
-          'hydratk.lib.network' : {
-                                   'min-version' : '0.2.0', 
-                                   'package'     : 'hydratk-lib-network'
-                                  }      
-        }  
+        """                 
         
         return bootstrapper._check_dependencies(dep_modules, 'hydratk-ext-datagen')
     
@@ -67,7 +67,7 @@ class Extension(extension.Extension):
            none
            
         Returns:
-           list: files to delete    
+           tuple: list (files), list (modules)  
                 
         """            
         
@@ -76,7 +76,7 @@ class Extension(extension.Extension):
                  '/etc/hydratk/conf.d/hydratk-ext-datagen.conf'
                 ]
             
-        return files         
+        return files, dep_modules         
         
     def _register_actions(self):
         """Method registers actions

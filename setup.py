@@ -29,7 +29,7 @@ classifiers = [
 ] 
 
 packages = find_packages('src')
-def version_update(cfg):
+def version_update(cfg, *args):
      
     if (not(version_info[0] == 2 and version_info[1] == 7)):
         exclude = [
@@ -54,7 +54,7 @@ config = {
                  ],
           
   'modules' : [    
-               'hydratk'                                               
+               {'module': 'hydratk', 'version': '>=0.4.0'}                                               
               ],
           
   'files' : {
