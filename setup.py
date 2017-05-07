@@ -5,16 +5,16 @@ import hydratk.lib.install.task as task
 
 with open("README.rst", "r") as f:
     readme = f.read()
-    
+
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Environment :: Other Environment",
     "Intended Audience :: Developers",
     "License :: Freely Distributable",
-    "Operating System :: OS Independent",   
+    "Operating System :: OS Independent",
     "License :: OSI Approved :: BSD License",
-    "Programming Language :: Python",    
+    "Programming Language :: Python",
     "Programming Language :: Python :: 2.6",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3.3",
@@ -26,70 +26,72 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Utilities"
-] 
+]
 
 packages = find_packages('src')
+
+
 def version_update(cfg, *args):
-     
+
     if (not(version_info[0] == 2 and version_info[1] == 7)):
         exclude = [
-                   'hydratk.extensions.datagen.asn1',
-                   'hydratk.extensions.datagen.asn1.asn1',
-                   'hydratk.extensions.datagen.asn1.core',
-                   'hydratk.extensions.datagen.asn1.utils'
-                  ]
-     
+            'hydratk.extensions.datagen.asn1',
+            'hydratk.extensions.datagen.asn1.asn1',
+            'hydratk.extensions.datagen.asn1.core',
+            'hydratk.extensions.datagen.asn1.utils'
+        ]
+
         for pck in exclude:
-            del packages[packages.index(pck)]     
+            del packages[packages.index(pck)]
 
 config = {
-  'pre_tasks' : [
-                 version_update,
-                 task.install_modules
-                ],
+    'pre_tasks': [
+        version_update,
+        task.install_modules
+    ],
 
-  'post_tasks' : [
-                  task.set_config,
-                  task.set_manpage
-                 ],
-          
-  'modules' : [    
-               {'module': 'hydratk', 'version': '>=0.4.0'}                                               
-              ],
-          
-  'files' : {
-             'config'  : {
-                          'etc/hydratk/conf.d/hydratk-ext-datagen.conf' : '/etc/hydratk/conf.d'
-                         },
-             'manpage' : 'doc/datagen.1'         
-            }                           
+    'post_tasks': [
+        task.set_config,
+        task.set_manpage
+    ],
+
+    'modules': [
+        {'module': 'hydratk', 'version': '>=0.4.0'}
+    ],
+
+    'files': {
+        'config': {
+            'etc/hydratk/conf.d/hydratk-ext-datagen.conf': '/etc/hydratk/conf.d'
+        },
+        'manpage': 'doc/datagen.1'
+    }
 }
 
 task.run_pre_install(argv, config)
 
 entry_points = {
-                'console_scripts': [
-                    'datagen = hydratk.extensions.datagen.bootstrapper:run_app'                               
-                ]
-               }          
-                 
+    'console_scripts': [
+        'datagen = hydratk.extensions.datagen.bootstrapper:run_app'
+    ]
+}
+
 setup(
-      name='hydratk-ext-datagen',
-      version='0.1.2a.dev4',
-      description='Utilities for data generation',
-      long_description=readme,
-      author='Petr Rašek, HydraTK team',
-      author_email='bowman@hydratk.org, team@hydratk.org',
-      url='http://extensions.hydratk.org/datagen',
-      license='BSD',
-      packages=packages,
-      package_dir={'' : 'src'},
-      classifiers=classifiers,
-      zip_safe=False,  
-      entry_points=entry_points,
-      keywords='hydratk,data generation,json,xml,asn.1',
-      requires_python='>=2.6,!=3.0.*,!=3.1.*,!=3.2.*',
-      platforms='Linux' 
-     )
+    name='hydratk-ext-datagen',
+    version='0.1.2a.dev4',
+    description='Utilities for data generation',
+    long_description=readme,
+    author='Petr Rašek, HydraTK team',
+    author_email='bowman@hydratk.org, team@hydratk.org',
+    url='http://extensions.hydratk.org/datagen',
+    license='BSD',
+    packages=packages,
+    package_dir={'': 'src'},
+    classifiers=classifiers,
+    zip_safe=False,
+    entry_points=entry_points,
+    keywords='hydratk,data generation,json,xml,asn.1',
+    requires_python='>=2.6,!=3.0.*,!=3.1.*,!=3.2.*',
+    platforms='Linux'
+)
 
 task.run_post_install(argv, config)
