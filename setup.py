@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
+from setuptools import setup as st_setup
+from setuptools import find_packages as st_find_packages
 from sys import argv, version_info
 import hydratk.lib.install.task as task
+import hydratk.lib.system.config as syscfg
+
+try:
+    os_info = syscfg.get_supported_os()
+except Exception as exc:
+    print(str(exc))
+    exit(1)
 
 with open("README.rst", "r") as f:
     readme = f.read()
@@ -28,7 +36,7 @@ classifiers = [
     "Topic :: Utilities"
 ]
 
-packages = find_packages('src')
+packages = st_find_packages('src')
 
 
 def version_update(cfg, *args):
@@ -56,12 +64,13 @@ config = {
     ],
 
     'modules': [
-        {'module': 'hydratk', 'version': '>=0.4.0'}
+        {'module': 'hydratk', 'version': '>=0.4.0'},
+        {'module': 'hydratk-lib-network', 'version': '>=0.2.0'}
     ],
 
     'files': {
         'config': {
-            'etc/hydratk/conf.d/hydratk-ext-datagen.conf': '/etc/hydratk/conf.d'
+            'etc/hydratk/conf.d/hydratk-ext-datagen.conf': '{0}/hydratk/conf.d'.format(syscfg.HTK_ETC_DIR)
         },
         'manpage': 'doc/datagen.1'
     }
@@ -75,9 +84,9 @@ entry_points = {
     ]
 }
 
-setup(
+st_setup(
     name='hydratk-ext-datagen',
-    version='0.1.2a.dev4',
+    version='0.1.2rc1',
     description='Utilities for data generation',
     long_description=readme,
     author='Petr Rašek, HydraTK team',

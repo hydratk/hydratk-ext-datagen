@@ -1,2 +1,2 @@
-hydratk
-hydratk-lib-network 
+hydratk>=0.4.0
+hydratk-lib-network>=0.2.0 

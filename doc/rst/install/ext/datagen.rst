@@ -63,11 +63,20 @@ See installation example, Python 2.7.
 
   .. code-block:: bash
   
+     **************************************
+     *     Running pre-install tasks      *
+     **************************************
+     
+     *** Running task: version_update ***
+     
+     *** Running task: install_modules ***
+     Module hydratk already installed with version 0.5.0rc1
+     Module hydratk-lib-network already installed with version 0.2.1rc1
+     
      running install
      running bdist_egg
      running egg_info
      creating src/hydratk_ext_datagen.egg-info
-     writing requirements to src/hydratk_ext_datagen.egg-info/requires.txt
      writing src/hydratk_ext_datagen.egg-info/PKG-INFO
      writing top-level names to src/hydratk_ext_datagen.egg-info/top_level.txt
      writing dependency_links to src/hydratk_ext_datagen.egg-info/dependency_links.txt
@@ -82,43 +91,41 @@ See installation example, Python 2.7.
      creating build
      creating build/lib.linux-x86_64-2.7
      creating build/lib.linux-x86_64-2.7/hydratk
-     copying src/hydratk/__init__.py -> build/lib.linux-x86_64-2.7/hydratk
-     creating build/lib.linux-x86_64-2.7/hydratk/extensions
-     copying src/hydratk/extensions/__init__.py -> build/lib.linux-x86_64-2.7/hydratk/extensions
-     creating build/lib.linux-x86_64-2.7/hydratk/extensions/datagen
      ...
-
+     creating build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/dependency_links.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/entry_points.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/not-zip-safe -> build/bdist.linux-x86_64/egg/EGG-INFO
+     copying src/hydratk_ext_datagen.egg-info/top_level.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
      creating dist
-     creating 'dist/hydratk_ext_datagen-0.1.1-py2.7.egg' and adding 'build/bdist.linux-x86_64/egg' to it
+     creating 'dist/hydratk_ext_datagen-0.1.2rc1-py2.7.egg' and adding 'build/bdist.linux-x86_64/egg' to it
      removing 'build/bdist.linux-x86_64/egg' (and everything under it)
-     Processing hydratk_ext_datagen-0.1.1-py2.7.egg
-     creating /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.1-py2.7.egg
-     Extracting hydratk_ext_datagen-0.1.1-py2.7.egg to /usr/local/lib/python2.7/dist-packages
-     Adding hydratk-ext-datagen 0.1.1 to easy-install.pth file
+     Processing hydratk_ext_datagen-0.1.2rc1-py2.7.egg
+     creating /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.2rc1-py2.7.egg
+     Extracting hydratk_ext_datagen-0.1.2rc1-py2.7.egg to /usr/local/lib/python2.7/dist-packages
+     Adding hydratk-ext-datagen 0.1.2rc1 to easy-install.pth file
      Installing datagen script to /usr/local/bin
+     Installed /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.2rc1-py2.7.egg
+     Processing dependencies for hydratk-ext-datagen==0.1.2rc1
+     Finished processing dependencies for hydratk-ext-datagen==0.1.2rc1
 
-     Installed /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.1-py2.7.egg
-     Processing dependencies for hydratk-ext-datagen==0.1.1
-     Searching for hydratk-lib-network==0.2.0
-     Best match: hydratk-lib-network 0.2.0
-     Processing hydratk_lib_network-0.2.0-py2.7.egg
-     hydratk-lib-network 0.2.0 is already the active version in easy-install.pth
+     **************************************
+     *     Running post-install tasks     *
+     **************************************
 
-     Using /usr/local/lib/python2.7/dist-packages/hydratk_lib_network-0.2.0-py2.7.egg
-     Searching for hydratk==0.4.0
-     Best match: hydratk 0.4.0
-     Processing hydratk-0.4.0-py2.7.egg
-     hydratk 0.4.0 is already the active version in easy-install.pth
-     Installing htkprof script to /usr/local/bin
-     Installing htk script to /usr/local/bin
+     *** Running task: set_config ***
 
-     Using /usr/local/lib/python2.7/dist-packages/hydratk-0.4.0-py2.7.egg
-     Finished processing dependencies for hydratk-ext-datagen==0.1.1 
+     Copying file etc/hydratk/conf.d/hydratk-ext-datagen.conf to /etc/hydratk/conf.d
+
+     *** Running task: set_manpage ***
+
   
 Application installs following (paths depend on your OS configuration)
 
 * datagen command in /usr/local/bin/datagen
-* modules in /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.1-py2.7.egg
+* modules in /usr/local/lib/python2.7/dist-packages/hydratk_ext_datagen-0.1.2-py2.7.egg
 * configuration file in /etc/hydratk/conf.d/hydratk-ext-datagen.conf   
      
 Run
@@ -132,7 +139,7 @@ Check hydratk-ext-datagen module is installed.
   
      $ pip list | grep hydratk-ext-datagen
      
-     hydratk-ext-datagen (0.1.1)
+     hydratk-ext-datagen (0.1.2)
      
 Check installed extensions
 
@@ -140,7 +147,7 @@ Check installed extensions
   
      $ htk list-extensions
      
-     DataGen: DataGen v0.1.1 (c) [2016 Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>] 
+     DataGen: DataGen v0.1.2 (c) [2016 - 2017 Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>] 
      
 Type command htk help and detailed info is displayed.
 Type man datagen to display manual page. 
