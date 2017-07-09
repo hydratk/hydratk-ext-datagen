@@ -105,7 +105,7 @@ Test-Scenario-3:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)  
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'input', 'interactive', 
                'language', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()     
@@ -169,7 +169,7 @@ Test-Scenario-4:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'input', 'interactive', 
                'language', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)           
         th.clear_cmd()

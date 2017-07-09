@@ -64,7 +64,7 @@ config = {
     ],
 
     'modules': [
-        {'module': 'hydratk', 'version': '>=0.4.0'},
+        {'module': 'hydratk', 'version': '>=0.5.0'},
         {'module': 'hydratk-lib-network', 'version': '>=0.2.0'}
     ],
 
