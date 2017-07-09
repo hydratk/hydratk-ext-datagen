@@ -192,6 +192,8 @@ class Extension(extension.Extension):
             ('f', 'force'), False, 'force', False, option_profile)
         self._mh.match_cli_option(
             ('i', 'interactive'), False, 'interactive', False, option_profile)
+        self._mh.match_cli_option(
+            ('h', 'home'), False, 'home', False, option_profile)
 
     def gen_asn1(self):
         """Method handles command gen-asn1
