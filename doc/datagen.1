@@ -16,10 +16,12 @@ Following generators are supported:
 .SH COMMANDS
 \fBasn1\fR - encode text file, decode binary file according to ASN.1 specification
   \fIOptions:\fR
-    \fB--action encode|decode\fR - action
+    \fB--action compile|decode|encode|transcode\fR - action
     \fB--element <title>\fR - element title from specification
     \fB--input <path>\fR - input filename
     \fB--spec <path>\fR - specification filename
+    \fB[--iformat ber|der|oer|aper|uper|xer|gser]\fR - input format, default ber for action decode, gser for action encode
+    \fB[--oformat ber|der|oer|aper|uper|xer|gser]\fR - output format, default ber for action encode, gser for action decode
     \fB[--output <path>]\fR - output filename, default input filename with changed suffix
 
 \fBhelp\fR - prints help

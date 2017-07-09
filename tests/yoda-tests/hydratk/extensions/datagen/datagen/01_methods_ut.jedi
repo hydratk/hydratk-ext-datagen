@@ -66,7 +66,7 @@ Test-Scenario-2:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec', 'gen-timeout']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-iformat', 'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)
         th.clear_cmd()
         
@@ -105,8 +105,8 @@ Test-Scenario-3:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)  
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
-               'language', 'output', 'run-mode', 'spec', 'timeout']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'iformat', 'input', 'interactive', 
+               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()     
         
@@ -146,7 +146,7 @@ Test-Scenario-4:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-input', 'gen-output', 'gen-spec', 'gen-timeout']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-iformat', 'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()    
         
@@ -169,8 +169,8 @@ Test-Scenario-4:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'input', 'interactive', 
-               'language', 'output', 'run-mode', 'spec', 'timeout']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'iformat', 'input', 'interactive', 
+               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)           
         th.clear_cmd()
         
@@ -403,7 +403,7 @@ Test-Scenario-7:
   Test-Case-1:
     Id: tc_01
     Name: tc_gen_asn1
-    Desc: Generate ASN.1 record
+    Desc: ASN.1 codec
     
     Test-Condition-1: 
       Id: tco_01
@@ -414,15 +414,16 @@ Test-Scenario-7:
         th = TestHead()
         ext = th._ext['DataGen']
         th.pre_replace()
-        TestHead.options = {'gen-action': 'encode', 'gen-element': 'TestSeq2', 'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'}
+        TestHead.options = {'gen-action': 'encode', 'gen-element': 'TestSeq2', 'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn',
+                            'gen-oformat': 'ber'}
         
-        TestHead.options['gen-input'] = infile = './in.json'
-        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        TestHead.options['gen-input'] = infile = './in.gser'
+        input = '{a 20, b TRUE, c {d FALSE, e \'780000\'H}, f {g 128, h TRUE}}'
         with open(infile, 'w') as f:
             f.write(input)        
         
         ext.gen_asn1()
-        outfile = './in.bin'
+        outfile = './in.ber'
         res = path.exists(outfile)
         
       Validate: |
@@ -436,7 +437,7 @@ Test-Scenario-7:
       Desc: Set encode output
       
       Test: |
-        TestHead.options['gen-output'] = outfile = './out.bin'
+        TestHead.options['gen-output'] = outfile = './out.ber'
         ext.gen_asn1()
         res = path.exists(outfile)        
       
@@ -452,10 +453,11 @@ Test-Scenario-7:
       
       Test: |
         infile = outfile
-        TestHead.options['gen-action'], TestHead.options['gen-input'] = 'decode', infile
+        TestHead.options['gen-action'], TestHead.options['gen-input'], TestHead.options['gen-iformat'] = 'decode', infile, 'ber'
+        del TestHead.options['gen-oformat']
         del TestHead.options['gen-output']
         ext.gen_asn1()
-        outfile = './out.json'
+        outfile = './out.gser'
         res = path.exists(outfile) 
       
       Validate: |    
@@ -466,10 +468,43 @@ Test-Scenario-7:
     Test-Condition-4: 
       Id: tco_04
       Name: tco_decode_output
-      Desc: Set devode output
+      Desc: Set decode output
       
       Test: |
-        TestHead.options['gen-output'] = outfile = './test.json'
+        TestHead.options['gen-output'] = outfile = './test.gser'
+        ext.gen_asn1()
+        res = path.exists(outfile) 
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile)           
+        remove(outfile)   
+        
+    Test-Condition-5: 
+      Id: tco_05
+      Name: tco_transcode
+      Desc: Transcode
+      
+      Test: |
+        infile = './out.ber'
+        TestHead.options['gen-action'], TestHead.options['gen-input'], TestHead.options['gen-oformat'] = 'transcode', infile, 'oer'
+        del TestHead.options['gen-output']
+        ext.gen_asn1()
+        outfile = './out.oer'
+        res = path.exists(outfile) 
+      
+      Validate: |    
+        this.test_result = res
+        assert (res), 'file {0} created'.format(outfile)               
+        remove(outfile) 
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_transcode_output
+      Desc: Set transcode output
+      
+      Test: |
+        TestHead.options['gen-output'] = outfile = './test.oer'
         ext.gen_asn1()
         res = path.exists(outfile) 
       
@@ -477,7 +512,7 @@ Test-Scenario-7:
         this.test_result = res
         assert (res), 'file {0} created'.format(outfile) 
         remove(infile)              
-        remove(outfile)                
+        remove(outfile)                       
         th.post_replace() 
         th.clear_cmd()      
         
@@ -570,7 +605,7 @@ Test-Scenario-7:
       Test: |
         TestHead.options['gen-spec'] = 'xx'
         TestHead.options['gen-input'] = infile = './in.json'
-        input = '{"a": 20, "b": true, "c": {"d": false, "e": "xyz"}, "f": {"g": 128,"h": true}}'
+        input = '{a 20, b TRUE, c {d FALSE, e \'780000\'H}, f {g 128, h TRUE}}'
         with open(infile, 'w') as f:
             f.write(input)        
         

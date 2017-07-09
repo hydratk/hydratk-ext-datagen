@@ -49,7 +49,7 @@ Method registers action hooks for standalone mode.
 
 commands - asn1, json, xml, help
 long options - spec, input, output, action, element, envelope
-global options - config, debug, debug-channel, language, run-mode, force, interactive
+global options - config, debug, debug-channel, language, run-mode, force, interactive, home
 
 * gen_json
 
@@ -77,25 +77,36 @@ gen-output (output filename, optinal), gen-envelope (include SOAP envelope, opti
      
 * gen_asn1
 
-Method handles command gen-asn1. It uses options gen-action (encode|decode, mandatory), gen-spec (specification filename, mandatory), gen-element 
-(generated element name, mandatory), gen-input (input filename, mandatory), gen-output (output filename, optional).
-Creates ASN1Codec object instance, imports specification (method import_spec) and generates record (method according to action, encode or decode).
+Method handles command gen-asn1. It uses options gen-action (compile|decode|encode|transcode, mandatory), gen-spec (specification filename, mandatory), gen-element 
+(generated element name, mandatory), gen-input (input filename, mandatory), gen-iformat (input format ber|der|oer|aper|uper|xer|gser), 
+gen-oformat (output format ber|der|oer|aper|uper|xer|gser), gen-output (output filename, optional).
+Creates ASN1Codec object instance and calls method according to action (compile, decode, encode, transcode)
 
   .. code-block:: bash
   
-     # encoding
-     htk --gen-action encode --gen-spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --gen-element TestSeq2 
-         --gen-input in.json --gen-output out.bin gen-asn1
-         
-     datagen --action encode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.json
-             --output out.bin
-             
-     #decoding
+     # compile
+     htk --gen-action compile --gen-spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn gen-asn1
+  
+     # decode
      htk --gen-action decode --gen-spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --gen-element TestSeq2
-         --gen-input in.bin --gen-output out.json gen-asn1
+         --gen-input in.ber --gen-iformat ber --gen-output out.gser gen-asn1
          
-     datagen --action decode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.bin
-             --output out.json
+     datagen --action decode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.ber
+             --iformat ber --output out.gser  
+  
+     # encode
+     htk --gen-action encode --gen-spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --gen-element TestSeq2 
+         --gen-input in.gser --gen-oformat ber --gen-output out.ber gen-asn1
+         
+     datagen --action encode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.gser
+             --oformat ber --output out.ber            
+
+     # transcode
+     htk --gen-action transcode --gen-spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --gen-element TestSeq2 
+         --gen-input in.ber --gen-iformat ber --gen-oformat oer --gen-output out.oer gen-asn1
+         
+     datagen --action transcode --spec /var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn --element TestSeq2 --input in.ber
+             --iformat ber --oformat oer --output out.oer  
 
 * gen_selenium
 
@@ -112,5 +123,6 @@ Creates Adapter object instance and adapts Selenium script to Yoda format (metho
 configuration
 ^^^^^^^^^^^^^
 
-Configuration is stored in /etc/hydratk/conf.dhydratk-ext-datagen.conf
-Currently there are no specific options (extension enabling only).                  
+Configuration is stored in /etc/hydratk/conf.d/hydratk-ext-datagen.conf
+
+* ffasn1dump_path - path to ffasn1dump tool, default /usr/local/bin/ffasn1dump                

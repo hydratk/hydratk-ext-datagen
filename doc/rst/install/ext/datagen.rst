@@ -147,7 +147,7 @@ Check installed extensions
   
      $ htk list-extensions
      
-     DataGen: DataGen v0.1.2 (c) [2016 - 2017 Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>] 
+     DataGen: DataGen v0.1.3 (c) [2016 - 2017 Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>] 
      
 Type command htk help and detailed info is displayed.
 Type man datagen to display manual page. 
@@ -159,10 +159,12 @@ Type man datagen to display manual page.
      Commands:    
         gen-asn1 - encode text file, decode binary file according to ASN.1 specification
            Options:
-              --gen-action encode|decode - action
+              --gen-action compile|decode|encode|transcode - action
               --gen-element <title> - element title from specification
               --gen-input <path> - input filename
               --gen-spec <path> - specification filename
+             [--gen-iformat ber|der|oer|aper|uper|xer|gser] - input format, default ber for action decode, gser for action encode
+             [--gen-oformat ber|der|oer|aper|uper|xer|gser] - output format, default ber for action encode, gser for action decode              
              [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
 
         gen-json - generate sample json file according to JSON specification
@@ -198,10 +200,12 @@ You can run DataGen also in standalone mode.
      Commands:
         asn1 - encode text file, decode binary file according to ASN.1 specification
            Options:
-              --action encode|decode - action
+              --action compile|decode|encode|transcode - action
               --element <title> - element title from specification
               --input <path> - input filename
               --spec <path> - specification filename
+              [--iformat ber|der|oer|aper|uper|xer|gser] - input format, default ber for action decode, gser for action encode
+              [--oformat ber|der|oer|aper|uper|xer|gser] - output format, default ber for action encode, gser for action decode                
               [--output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
 
         help - prints help

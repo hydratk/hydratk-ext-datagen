@@ -15,7 +15,7 @@ import hydratk.lib.system.config as syscfg
 
 dep_modules = {
     'hydratk': {
-        'min-version': '0.4.0',
+        'min-version': '0.5.0',
         'package': 'hydratk'
     },
     'hydratk.lib.network': {
@@ -42,7 +42,7 @@ class Extension(extension.Extension):
 
         self._ext_id = 'datagen'
         self._ext_name = 'DataGen'
-        self._ext_version = '0.1.2'
+        self._ext_version = '0.1.3'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>'
         self._ext_year = '2016-2017'
 
@@ -125,6 +125,8 @@ class Extension(extension.Extension):
         self._mh.match_long_option('gen-output', True, 'gen-output')
         self._mh.match_long_option('gen-action', True, 'gen-action')
         self._mh.match_long_option('gen-element', True, 'gen-element')
+        self._mh.match_long_option('gen-iformat', True, 'gen-iformat')
+        self._mh.match_long_option('gen-oformat', True, 'gen-oformat')
         self._mh.match_long_option('gen-envelope', False, 'gen-envelope')
         self._mh.match_long_option('gen-browser', True, 'gen-browser')
         self._mh.match_long_option('gen-timeout', True, 'gen-timeout')
@@ -161,39 +163,25 @@ class Extension(extension.Extension):
 
         self._mh.match_cli_command('help', option_profile)
 
-        self._mh.match_long_option(
-            'spec', True, 'gen-spec', False, option_profile)
-        self._mh.match_long_option(
-            'input', True, 'gen-input', False, option_profile)
-        self._mh.match_long_option(
-            'output', True, 'gen-output', False, option_profile)
-        self._mh.match_long_option(
-            'action', True, 'gen-action', False, option_profile)
-        self._mh.match_long_option(
-            'element', True, 'gen-element', False, option_profile)
-        self._mh.match_long_option(
-            'envelope', False, 'gen-envelope', False, option_profile)
-        self._mh.match_long_option(
-            'browser', True, 'gen-browser', False, option_profile)
-        self._mh.match_long_option(
-            'timeout', True, 'gen-timeout', False, option_profile)
+        self._mh.match_long_option('spec', True, 'gen-spec', False, option_profile)
+        self._mh.match_long_option('input', True, 'gen-input', False, option_profile)
+        self._mh.match_long_option('output', True, 'gen-output', False, option_profile)
+        self._mh.match_long_option('action', True, 'gen-action', False, option_profile)
+        self._mh.match_long_option('element', True, 'gen-element', False, option_profile)
+        self._mh.match_long_option('iformat', True, 'gen-iformat', False, option_profile)
+        self._mh.match_long_option('oformat', True, 'gen-oformat', False, option_profile)
+        self._mh.match_long_option('envelope', False, 'gen-envelope', False, option_profile)
+        self._mh.match_long_option('browser', True, 'gen-browser', False, option_profile)
+        self._mh.match_long_option('timeout', True, 'gen-timeout', False, option_profile)
 
-        self._mh.match_cli_option(
-            ('c', 'config'), True, 'config', False, option_profile)
-        self._mh.match_cli_option(
-            ('d', 'debug'), True, 'debug', False, option_profile)
-        self._mh.match_cli_option(
-            ('e', 'debug-channel'), True, 'debug-channel', False, option_profile)
-        self._mh.match_cli_option(
-            ('l', 'language'), True, 'language', False, option_profile)
-        self._mh.match_cli_option(
-            ('m', 'run-mode'), True, 'run-mode', False, option_profile)
-        self._mh.match_cli_option(
-            ('f', 'force'), False, 'force', False, option_profile)
-        self._mh.match_cli_option(
-            ('i', 'interactive'), False, 'interactive', False, option_profile)
-        self._mh.match_cli_option(
-            ('h', 'home'), False, 'home', False, option_profile)
+        self._mh.match_cli_option(('c', 'config'), True, 'config', False, option_profile)
+        self._mh.match_cli_option(('d', 'debug'), True, 'debug', False, option_profile)
+        self._mh.match_cli_option(('e', 'debug-channel'), True, 'debug-channel', False, option_profile)
+        self._mh.match_cli_option(('l', 'language'), True, 'language', False, option_profile)
+        self._mh.match_cli_option(('m', 'run-mode'), True, 'run-mode', False, option_profile)
+        self._mh.match_cli_option(('f', 'force'), False, 'force', False, option_profile)
+        self._mh.match_cli_option(('i', 'interactive'), False, 'interactive', False, option_profile)
+        self._mh.match_cli_option(('h', 'home'), False, 'home', False, option_profile)
 
     def gen_asn1(self):
         """Method handles command gen-asn1
@@ -216,35 +204,71 @@ class Extension(extension.Extension):
         element = CommandlineTool.get_input_option('gen-element')
         input = CommandlineTool.get_input_option('gen-input')
         output = CommandlineTool.get_input_option('gen-output')
+        iformat = CommandlineTool.get_input_option('gen-iformat')
+        oformat = CommandlineTool.get_input_option('gen-oformat')
 
         if (not action):
             print('Missing option action')
-        elif (action not in ['encode', 'decode']):
-            print('Action not in encode|decode')
+        elif (action not in ['compile', 'decode', 'encode', 'transcode']):
+            print('Action not in compile|decode|encode|transcode')
         elif (not spec):
             print('Missing option spec')
-        elif (not element):
+        elif (not element and action in ['decode', 'encode', 'transcode']):
             print('Missing option element')
-        elif (not input):
-            print('Missing option input')
+        elif (iformat != False and iformat not in ['ber', 'der', 'oer', 'aper', 'uper', 'xer', 'gser']):
+            print('Input format not in ber|der|oer|aper|uper|xer|gser')
+        elif (oformat != False and oformat not in ['ber', 'der', 'oer', 'aper', 'uper', 'xer', 'gser']):
+            print('Output format not in ber|der|oer|aper|uper|xer|gser')
         else:
 
             from hydratk.extensions.datagen.asn1codec import ASN1Codec
 
             codec = ASN1Codec()
-            if (codec.import_spec(spec)):
-                output = None if (not output) else output
-                if (action == 'encode'):
-                    result = codec.encode(input, element, output)
-                elif (action == 'decode'):
-                    result = codec.decode(input, element, output)
 
-                if (not result):
-                    print('{0} error'.format(action))
+            output = None if (not output) else output
+
+            if (action == 'compile'):
+                res = codec.compile(spec)
+                if (res):
+                    print('Specification compiled')
                 else:
-                    print('{0} finished'.format(action))
-            else:
-                print('Import specification error')
+                    print('Compilation error')
+
+            elif (action == 'decode'):
+                if (not input):
+                    print('Missing option input')
+                else:
+                    iformat = 'ber' if (not iformat) else iformat
+                    res = codec.decode(spec, element, input, iformat, output)
+                    if (res):
+                        print('File decoded')
+                    else:
+                        print('Decoding error')
+
+            elif (action == 'encode'):
+                if (not input):
+                    print('Missing option input')
+                else:
+                    oformat = 'ber' if (not oformat) else oformat
+                    res = codec.encode(spec, element, input, oformat, output)
+                    if (res):
+                        print('File encoded')
+                    else:
+                        print('Encoding error')
+
+            elif (action == 'transcode'):
+                if (not input):
+                    print('Missing option input')
+                elif (not iformat):
+                    print('Missing option iformat')
+                elif (not oformat):
+                    print('Missing option oformat')
+                else:
+                    res = codec.transcode(spec, element, input, iformat, oformat, output)
+                    if (res):
+                        print('File transcoded')
+                    else:
+                        print('Transcoding error')
 
     def gen_json(self):
         """Method handles command gen-json
