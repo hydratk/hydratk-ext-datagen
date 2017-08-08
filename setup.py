@@ -86,7 +86,7 @@ entry_points = {
 
 st_setup(
     name='hydratk-ext-datagen',
-    version='0.1.2rc1',
+    version='0.1.2',
     description='Utilities for data generation',
     long_description=readme,
     author='Petr Rašek, HydraTK team',
