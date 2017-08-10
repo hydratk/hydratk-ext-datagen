@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup as st_setup
 from setuptools import find_packages as st_find_packages
-from sys import argv, version_info
+from sys import argv
 import hydratk.lib.install.task as task
 import hydratk.lib.system.config as syscfg
 
@@ -38,23 +38,8 @@ classifiers = [
 
 packages = st_find_packages('src')
 
-
-def version_update(cfg, *args):
-
-    if (not(version_info[0] == 2 and version_info[1] == 7)):
-        exclude = [
-            'hydratk.extensions.datagen.asn1',
-            'hydratk.extensions.datagen.asn1.asn1',
-            'hydratk.extensions.datagen.asn1.core',
-            'hydratk.extensions.datagen.asn1.utils'
-        ]
-
-        for pck in exclude:
-            del packages[packages.index(pck)]
-
 config = {
     'pre_tasks': [
-        version_update,
         task.install_modules
     ],
 
@@ -86,7 +71,7 @@ entry_points = {
 
 st_setup(
     name='hydratk-ext-datagen',
-    version='0.1.2',
+    version='0.1.3dev0',
     description='Utilities for data generation',
     long_description=readme,
     author='Petr Rašek, HydraTK team',
