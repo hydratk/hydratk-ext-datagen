@@ -73,7 +73,7 @@ class JSONGen(object):
 
         try:
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_import_spec', filename), self._mh.fromhere())
             ev = event.Event('jsongen_before_import_spec', filename)
             if (self._mh.fire_event(ev) > 0):
@@ -87,7 +87,7 @@ class JSONGen(object):
                 else:
                     raise ValueError('File {0} not found'.format(filename))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_spec_imported'), self._mh.fromhere())
             ev = event.Event('jsongen_after_import_spec')
             self._mh.fire_event(ev)
@@ -95,7 +95,7 @@ class JSONGen(object):
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg(
+            self._mh.demsg(
                 'htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 
@@ -120,7 +120,7 @@ class JSONGen(object):
             if (self._schema == None):
                 raise ValueError('Schema is not imported yet')
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_write_sample'), self._mh.fromhere())
             ev = event.Event('jsongen_before_write', outfile)
             if (self._mh.fire_event(ev) > 0):
@@ -132,7 +132,7 @@ class JSONGen(object):
                 with open(outfile, 'w') as f:
                     f.write(dumps(doc, indent=4))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_sample_written', outfile), self._mh.fromhere())
             ev = event.Event('jsongen_after_write')
             self._mh.fire_event(ev)
@@ -140,7 +140,7 @@ class JSONGen(object):
             return True
 
         except Exception as ex:
-            self._mh.dmsg(
+            self._mh.demsg(
                 'htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 

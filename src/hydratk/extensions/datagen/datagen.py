@@ -44,7 +44,7 @@ class Extension(extension.Extension):
         self._ext_name = 'DataGen'
         self._ext_version = '0.1.3'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>'
-        self._ext_year = '2016-2017'
+        self._ext_year = '2016-2018'
 
         if (not self._check_dependencies()):
             exit(0)
@@ -196,7 +196,7 @@ class Extension(extension.Extension):
 
         """
 
-        self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+        self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
             'datagen_received_cmd', 'gen-asn1'), self._mh.fromhere())
 
         action = CommandlineTool.get_input_option('gen-action')
@@ -283,7 +283,7 @@ class Extension(extension.Extension):
 
         """
 
-        self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+        self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
             'datagen_received_cmd', 'gen-json'), self._mh.fromhere())
 
         spec = CommandlineTool.get_input_option('gen-spec')
@@ -318,7 +318,7 @@ class Extension(extension.Extension):
 
         """
 
-        self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+        self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
             'datagen_received_cmd', 'gen-xml'), self._mh.fromhere())
 
         spec = CommandlineTool.get_input_option('gen-spec')
@@ -357,7 +357,7 @@ class Extension(extension.Extension):
 
         """
 
-        self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
+        self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
             'datagen_received_cmd', 'gen-selenium'), self._mh.fromhere())
 
         input = CommandlineTool.get_input_option('gen-input')

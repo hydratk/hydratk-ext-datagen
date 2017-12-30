@@ -76,7 +76,7 @@ class ASN1Codec(object):
         """
 
         try:
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_compile', spec), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_compile', spec), self._mh.fromhere())
             ev = event.Event('asn1_before_compile', spec)
             if (self._mh.fire_event(ev) > 0):
                 spec = ev.argv(0)
@@ -91,14 +91,14 @@ class ASN1Codec(object):
                 else:
                     raise ValueError('File {0} not found'.format(spec))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_compiled'), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_compiled'), self._mh.fromhere())
             ev = event.Event('asn1_after_compile')
             self._mh.fire_event(ev)
 
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
+            self._mh.demsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 
     def decode(self, spec, element, input, iformat='ber', output=None):
@@ -121,7 +121,7 @@ class ASN1Codec(object):
         """
 
         try:
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decode', input, iformat, element, spec), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decode', input, iformat, element, spec), self._mh.fromhere())
             ev = event.Event('asn1_before_decode', spec, element, input, iformat, output)
             if (self._mh.fire_event(ev) > 0):
                 spec = ev.argv(0)
@@ -144,14 +144,14 @@ class ASN1Codec(object):
                 else:
                     raise ValueError('File {0} not found'.format(spec))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decoded', output), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_decode')
             self._mh.fire_event(ev)
 
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
+            self._mh.demsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 
     def encode(self, spec, element, input, oformat='ber', output=None):
@@ -174,7 +174,7 @@ class ASN1Codec(object):
         """
 
         try:
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encode', input, oformat, element, spec), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encode', input, oformat, element, spec), self._mh.fromhere())
             ev = event.Event('asn1_before_encode', spec, element, input, oformat, output)
             if (self._mh.fire_event(ev) > 0):
                 spec = ev.argv(0)
@@ -197,14 +197,14 @@ class ASN1Codec(object):
                 else:
                     raise ValueError('File {0} not found'.format(spec))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encoded', output), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_encode')
             self._mh.fire_event(ev)
 
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
+            self._mh.demsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 
     def transcode(self, spec, element, input, iformat, oformat, output=None):
@@ -228,7 +228,7 @@ class ASN1Codec(object):
         """
 
         try:
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_transcode', input, iformat, oformat, element, spec), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_transcode', input, iformat, oformat, element, spec), self._mh.fromhere())
             ev = event.Event('asn1_before_transcode', spec, element, input, iformat, oformat, output)
             if (self._mh.fire_event(ev) > 0):
                 spec = ev.argv(0)
@@ -252,12 +252,12 @@ class ASN1Codec(object):
                 else:
                     raise ValueError('File {0} not found'.format(spec))
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_transcoded', output), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_transcoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_transcode')
             self._mh.fire_event(ev)
 
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
+            self._mh.demsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
