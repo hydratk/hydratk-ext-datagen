@@ -36,7 +36,8 @@ Test-Scenario-2:
   Version: 0.1
   
   Pre-Req: |
-    from hydratk.extensions.datagen.xmlgen import XMLGen   
+    from hydratk.extensions.datagen.xmlgen import XMLGen
+    from sys import prefix   
     
   Test-Case-1:
     Id: tc_01
@@ -50,7 +51,7 @@ Test-Scenario-2:
       
       Test: |
         g = XMLGen()
-        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
+        path = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
         g.import_spec(path)
         res = g.path
       
@@ -82,7 +83,8 @@ Test-Scenario-3:
   
   Pre-Req: |
     from hydratk.extensions.datagen.xmlgen import XMLGen  
-    from os import path, remove 
+    from os import path, remove
+    from sys import prefix 
     
   Test-Case-1:
     Id: tc_01
@@ -96,7 +98,7 @@ Test-Scenario-3:
       
       Test: |
         g = XMLGen()
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
         wsdl = g._create_dummy_wsdl(file)
               
       Validate: |  
@@ -155,7 +157,8 @@ Test-Scenario-4:
     from hydratk.core.masterhead import MasterHead
     from hydratk.extensions.datagen.xmlgen import XMLGen
     from yodahelpers.hydratk.core.events import events, reg_ev_hook 
-    from os import path, remove 
+    from os import path, remove
+    from sys import prefix 
     
   Test-Case-1:
     Id: tc_01
@@ -173,7 +176,7 @@ Test-Scenario-4:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])
         g = XMLGen()
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl'
         res = g.import_spec(file)
       
       Validate: |    
@@ -193,7 +196,7 @@ Test-Scenario-4:
       Desc: Import XSD
                        
       Test: |
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.xsd'
         res = g.import_spec(file)
       
       Validate: |
@@ -222,7 +225,7 @@ Test-Scenario-4:
       Desc: Invalid specification
       
       Test: |
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
         res = g.import_spec(file)
       
       Validate: |  
@@ -256,6 +259,7 @@ Test-Scenario-5:
   
   Pre-Req: |
     from hydratk.extensions.datagen.xmlgen import XMLGen
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -285,7 +289,7 @@ Test-Scenario-5:
       Desc: Invalid element
       
       Test: |
-        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        g.import_spec(prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
         res = g._get_element_type('xx')
       
       Validate: |                      
@@ -314,6 +318,7 @@ Test-Scenario-6:
   
   Pre-Req: |
     from hydratk.extensions.datagen.xmlgen import XMLGen
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -343,7 +348,7 @@ Test-Scenario-6:
       Desc: Invalid element
       
       Test: |
-        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        g.import_spec(prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
         res = g._get_element_ns('xx')
       
       Validate: |                      
@@ -374,6 +379,7 @@ Test-Scenario-7:
   Pre-Req: |
     from hydratk.extensions.datagen.xmlgen import XMLGen
     from lxml.etree import tostring
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -403,7 +409,7 @@ Test-Scenario-7:
       Desc: Complex element
       
       Test: |
-        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        g.import_spec(prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
         res = tostring(g._toxml_rec('customer')).decode()
       
       Validate: |                     
@@ -439,7 +445,7 @@ Test-Scenario-8:
     from hydratk.extensions.datagen.xmlgen import XMLGen
     from yodahelpers.hydratk.core.events import events, reg_ev_hook  
     from os import path, remove
-    from sys import version_info
+    from sys import version_info, prefix
     
     if (version_info[0] == 2):
         from string import replace
@@ -472,7 +478,7 @@ Test-Scenario-8:
         evs = ['xmlgen_before_write', 'xmlgen_after_write']
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])      
-        g.import_spec('/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
+        g.import_spec(prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl')
         res = g.toxml('customer')
       
       Validate: |                     

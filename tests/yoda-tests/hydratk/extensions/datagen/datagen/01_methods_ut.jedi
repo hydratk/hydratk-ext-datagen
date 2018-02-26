@@ -184,7 +184,8 @@ Test-Scenario-5:
   
   Pre-Req: |
     from yodalib.hydratk.core.testhead import TestHead
-    from os import path, remove         
+    from os import path, remove
+    from sys import prefix         
   
   Test-Case-1:
     Id: tc_01
@@ -200,7 +201,7 @@ Test-Scenario-5:
         th = TestHead()
         ext = th._ext['DataGen']
         th.pre_replace()
-        TestHead.options = {'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'}
+        TestHead.options = {'gen-spec': prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'}
         ext.gen_json()
         file = './sample.json'
         res = path.exists(file)
@@ -276,7 +277,8 @@ Test-Scenario-6:
   
   Pre-Req: |
     from yodalib.hydratk.core.testhead import TestHead
-    from os import path, remove         
+    from os import path, remove
+    from sys import prefix         
   
   Test-Case-1:
     Id: tc_01
@@ -292,7 +294,7 @@ Test-Scenario-6:
         th = TestHead()
         ext = th._ext['DataGen']
         th.pre_replace()
-        TestHead.options = {'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl', 'gen-element': 'create_service'}
+        TestHead.options = {'gen-spec': prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/crm.wsdl', 'gen-element': 'create_service'}
         ext.gen_xml()
         file = './sample.xml'
         res = path.exists(file)
@@ -398,7 +400,8 @@ Test-Scenario-7:
   
   Pre-Req: |
     from yodalib.hydratk.core.testhead import TestHead
-    from os import path, remove         
+    from os import path, remove
+    from sys import prefix         
   
   Test-Case-1:
     Id: tc_01
@@ -414,7 +417,7 @@ Test-Scenario-7:
         th = TestHead()
         ext = th._ext['DataGen']
         th.pre_replace()
-        TestHead.options = {'gen-action': 'encode', 'gen-element': 'TestSeq2', 'gen-spec': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn',
+        TestHead.options = {'gen-action': 'encode', 'gen-element': 'TestSeq2', 'gen-spec': prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn',
                             'gen-oformat': 'ber'}
         
         TestHead.options['gen-input'] = infile = './in.gser'
@@ -574,7 +577,7 @@ Test-Scenario-7:
       Desc: Missing element param
       
       Test: |
-        TestHead.options['gen-spec'] = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        TestHead.options['gen-spec'] = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
         ext.gen_asn1()
         res = path.exists(outfile)
         
@@ -629,7 +632,8 @@ Test-Scenario-8:
   
   Pre-Req: |
     from yodalib.hydratk.core.testhead import TestHead
-    from os import path, remove         
+    from os import path, remove
+    from sys import prefix         
   
   Test-Case-1:
     Id: tc_01
@@ -645,7 +649,7 @@ Test-Scenario-8:
         th = TestHead()
         ext = th._ext['DataGen']
         th.pre_replace()
-        TestHead.options = {'gen-input': '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/selenium_suite.html',
+        TestHead.options = {'gen-input': prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/selenium_suite.html',
                             'gen-browser': 'Firefox', 'gen-timeout': '5'}
         ext.gen_selenium()
         file = './Test Suite.jedi'
@@ -662,7 +666,7 @@ Test-Scenario-8:
       Desc: Set output file
       
       Test: |
-        file = '/var/local/hydratk/yoda/test.jedi'
+        file = prefix+'/var/local/hydratk/yoda/test.jedi'
         TestHead.options['gen-output'] = file
         ext.gen_selenium()
         res = path.exists(file)

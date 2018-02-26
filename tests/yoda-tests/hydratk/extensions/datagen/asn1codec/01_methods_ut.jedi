@@ -90,6 +90,7 @@ Test-Scenario-3:
     from hydratk.extensions.datagen.asn1codec import ASN1Codec
     from yodahelpers.hydratk.core.events import events, reg_ev_hook 
     from os import remove
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -107,7 +108,7 @@ Test-Scenario-3:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])
         g = ASN1Codec()
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
         res = g.compile(file)
       
       Validate: |    
@@ -163,6 +164,7 @@ Test-Scenario-4:
     from hydratk.extensions.datagen.asn1codec import ASN1Codec
     from yodahelpers.hydratk.core.events import events, reg_ev_hook 
     from os import path, remove
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -180,7 +182,7 @@ Test-Scenario-4:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])  
         g = ASN1Codec()      
-        spec = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        spec = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
         
         infile = './in.gser'
         input = '{a 20, b TRUE, c {d FALSE, e \'780000\'H}, f {g 128, h TRUE}}'
@@ -287,7 +289,7 @@ Test-Scenario-5:
     from hydratk.extensions.datagen.asn1codec import ASN1Codec
     from yodahelpers.hydratk.core.events import events, reg_ev_hook 
     from os import path, remove
-    from string import replace
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -305,7 +307,7 @@ Test-Scenario-5:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])    
         g = ASN1Codec()    
-        spec = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        spec = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
         
         infile = './in.gser'
         input = '{a 20, b TRUE, c {d FALSE, e \'780000\'H}, f {g 128, h TRUE}}'
@@ -329,11 +331,11 @@ Test-Scenario-5:
         
         with open(outfile, 'r') as f:
             cont = f.read()
-        cont = replace(cont, '\n', '')
-        cont = replace(cont, ' ', '')
+        cont = cont.replace('\n', '')
+        cont = cont.replace(' ', '')
               
         this.test_result = cont
-        exp = replace(input, ' ', '')
+        exp = input.replace(' ', '')
         assert (cont == exp), 'output = {0}'.format(exp)
         del mh._event_hooks[evs[0]]
         del mh._event_hooks[evs[1]]   
@@ -412,7 +414,7 @@ Test-Scenario-6:
     from hydratk.extensions.datagen.asn1codec import ASN1Codec
     from yodahelpers.hydratk.core.events import events, reg_ev_hook 
     from os import path, remove
-    from string import replace
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -430,7 +432,7 @@ Test-Scenario-6:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])    
         g = ASN1Codec()    
-        spec = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
+        spec = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.asn'
         
         infile = './in.gser'
         input = '{a 20, b TRUE, c {d FALSE, e \'780000\'H}, f {g 128, h TRUE}}'

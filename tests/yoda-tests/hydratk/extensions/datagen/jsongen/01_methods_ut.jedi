@@ -36,7 +36,8 @@ Test-Scenario-2:
   Version: 0.1
   
   Pre-Req: |
-    from hydratk.extensions.datagen.jsongen import JSONGen   
+    from hydratk.extensions.datagen.jsongen import JSONGen 
+    from sys import prefix  
     
   Test-Case-1:
     Id: tc_01
@@ -50,7 +51,7 @@ Test-Scenario-2:
       
       Test: |
         g = JSONGen()
-        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        path = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
         g.import_schema(path)
         res = g.path
       
@@ -83,7 +84,8 @@ Test-Scenario-3:
   Pre-Req: |
     from hydratk.core.masterhead import MasterHead
     from hydratk.extensions.datagen.jsongen import JSONGen
-    from yodahelpers.hydratk.core.events import events, reg_ev_hook  
+    from yodahelpers.hydratk.core.events import events, reg_ev_hook
+    from sys import prefix  
     
   Test-Case-1:
     Id: tc_01
@@ -101,7 +103,7 @@ Test-Scenario-3:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])
         g = JSONGen()
-        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        path = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
         res = g.import_schema(path)
       
       Validate: |    
@@ -122,7 +124,7 @@ Test-Scenario-3:
       
       Test: |
         g._path = g._schema = None
-        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        path = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
         res = g.import_schema(path)
       
       Validate: |    
@@ -147,7 +149,7 @@ Test-Scenario-3:
       Desc: Invalid schema
       
       Test: |
-        res = g.import_schema('/var/local/hydratk/testenv/crm.xsd')
+        res = g.import_schema(prefix+'/var/local/hydratk/testenv/crm.xsd')
       
       Validate: |                  
         this.test_result = res
@@ -163,6 +165,7 @@ Test-Scenario-4:
   
   Pre-Req: |
     from hydratk.extensions.datagen.jsongen import JSONGen
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -176,7 +179,7 @@ Test-Scenario-4:
       
       Test: |
         g = JSONGen()
-        path = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        path = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
         res = g._import_ref_schema(path)
       
       Validate: |                   
@@ -190,7 +193,7 @@ Test-Scenario-4:
       
       Test: |
         g = JSONGen()
-        path = 'file:///var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'
+        path = 'file://{0}/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec2.json'.format(prefix)
         res = g._import_ref_schema(path)
       
       Validate: |                   
@@ -220,7 +223,7 @@ Test-Scenario-4:
       
       Test: |
         try:
-            g._import_ref_schema('/var/local/hydratk/testenv/crm.xsd')
+            g._import_ref_schema(prefix+'/var/local/hydratk/testenv/crm.xsd')
             ex = False
         except ValueError:
             ex = True
@@ -350,6 +353,7 @@ Test-Scenario-6:
     from os import path, remove
     from sys import version_info
     from simplejson import loads
+    from sys import prefix
     
   Test-Case-1:
     Id: tc_01
@@ -367,7 +371,7 @@ Test-Scenario-6:
         reg_ev_hook(mh, evs[0])
         reg_ev_hook(mh, evs[1])
         g = JSONGen()
-        file = '/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
+        file = prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/spec.json'
         g.import_schema(file)
         res = g.tojson()
       
@@ -393,7 +397,7 @@ Test-Scenario-6:
       Desc: Set outfile
       
       Test: |
-        file = '/var/local/hydratk/test.json'
+        file = prefix+'/var/local/hydratk/test.json'
         res = g.tojson(file)
       
       Validate: |           
