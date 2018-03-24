@@ -52,7 +52,7 @@ class ASN1Codec(object):
         self._path = self._mh.cfg['Extensions']['DataGen']['ffasn1dump_path']
 
         if (not path.exists(self._path)):
-            raise ValueError('File {0} not found'.format(self._path))
+            raise ValueError(self._mh._trn.msg('datagen_file_not_found', self._path))
 
     @property
     def path(self):
@@ -89,7 +89,7 @@ class ASN1Codec(object):
                     if (err != None and len(err) > 0):
                         raise ValueError(err)
                 else:
-                    raise ValueError('File {0} not found'.format(spec))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', spec))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_compiled'), self._mh.fromhere())
             ev = event.Event('asn1_after_compile')
@@ -140,9 +140,9 @@ class ASN1Codec(object):
                         if (err != None and len(err) > 0):
                             raise ValueError(err)                        
                     else:
-                        raise ValueError('File {0} not found'.format(input))
+                        raise ValueError(self._mh._trn.msg('datagen_file_not_found', input))
                 else:
-                    raise ValueError('File {0} not found'.format(spec))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', spec))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_decoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_decode')
@@ -193,9 +193,9 @@ class ASN1Codec(object):
                         if (err != None and len(err) > 0):
                             raise ValueError(err)                        
                     else:
-                        raise ValueError('File {0} not found'.format(input))
+                        raise ValueError(self._mh._trn.msg('datagen_file_not_found', input))
                 else:
-                    raise ValueError('File {0} not found'.format(spec))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', spec))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_encoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_encode')
@@ -248,9 +248,9 @@ class ASN1Codec(object):
                         if (err != None and len(err) > 0):
                             raise ValueError(err)
                     else:
-                        raise ValueError('File {0} not found'.format(input))
+                        raise ValueError(self._mh._trn.msg('datagen_file_not_found', input))
                 else:
-                    raise ValueError('File {0} not found'.format(spec))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', spec))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_asn1_transcoded', output), self._mh.fromhere())
             ev = event.Event('asn1_after_transcode')

@@ -85,7 +85,7 @@ class JSONGen(object):
                     with open(filename, 'r') as f:
                         self._schema = loads(f.read())
                 else:
-                    raise ValueError('File {0} not found'.format(filename))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', filename))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_spec_imported'), self._mh.fromhere())
@@ -118,7 +118,7 @@ class JSONGen(object):
         try:
 
             if (self._schema == None):
-                raise ValueError('Schema is not imported yet')
+                raise ValueError(self._mh._trn.msg('datagen_jsongen_spec_not_imported'))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_jsongen_write_sample'), self._mh.fromhere())
@@ -161,7 +161,7 @@ class JSONGen(object):
         """
 
         if (self._schema == None):
-            raise ValueError('Schema is not imported yet')
+            raise ValueError(self._mh._trn.msg('datagen_jsongen_spec_not_imported'))
 
         if (schema == None):
             schema = self._schema
@@ -215,4 +215,4 @@ class JSONGen(object):
 
             return ref_schema
         else:
-            raise ValueError('File {0} not found'.format(filename))
+            raise ValueError(self._mh._trn.msg('datagen_file_not_found', filename))

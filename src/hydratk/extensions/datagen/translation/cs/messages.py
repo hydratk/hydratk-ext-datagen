@@ -17,6 +17,10 @@ language = {
 
 msg = {
     'datagen_received_cmd': ["Obdržen příkaz: '{0}'"],
+    'datagen_missing_option': ["Chybí volba: {0}"],
+    'datagen_invalid_option_value': ["Neplatná hodnota volby: {0}, podporované hodnoty: {1}"],
+    'datagen_action_error': ["Chyba při akci {0}"],
+    'datagen_file_not_found': ["Soubor {0} nenalezen"],
     'datagen_asn1_compile': ["Kompiluji ASN.1 specifikaci: '{0}'"],
     'datagen_asn1_compiled': ["ASN.1 specifikace zkompilována"],
     'datagen_asn1_decode': ["Dekóduji vstupní soubor: '{0}' z formátu: '{1}' podle elementu: '{2}' specifikace: '{3}'"],
@@ -27,10 +31,14 @@ msg = {
     'datagen_asn1_transcoded': ["Transkódováno do výstupního souboru: '{0}'"],
     'datagen_jsongen_import_spec': ["Importuji JSON specifikaci: '{0}'"],
     'datagen_jsongen_spec_imported': ["JSON specifikace importována"],
+    'datagen_jsongen_spec_not_imported': ["JSON specifikace nebyla importována"],
     'datagen_jsongen_write_sample': ["Vytvářím vzorový JSON dokument"],
     'datagen_jsongen_sample_written': ["Vzorek zapsán do souboru: '{0}'"],
     'datagen_xmlgen_import_spec': ["Importuji XML specifikaci: '{0}'"],
     'datagen_xmlgen_spec_imported': ["XML specifikace importována"],
+    'datagen_xmlgen_spec_not_imported': ["XML specifikace nebyla importována"],
+    'datagen_xmlgen_unknown_spec': ["Neznámý typ specifikace: {0}"],
+    'datagen_xmlgen_invalid_spec': ["Neplatná XML specifikace: {0}"],
     'datagen_xmlgen_write_sample': ["Vytvářím vzorový XML dokument"],
     'datagen_xmlgen_sample_written': ["Vzorek zapsán do souboru: '{0}'"],
     'datagen_adapter_parsing_suite': ["Parsuji suite ze souboru: '{0}'"],
@@ -38,5 +46,6 @@ msg = {
     'datagen_adapter_parsing_test': ["Parsuji test ze soubory: '{0}'"],
     'datagen_adapter_test_parsed': ["Test úspěšně parsován"],
     'datagen_adapter_cmd_unknown': ["Detekován neznámý příkaz '{0}'"],
-    'datagen_adapter_cmd_dummy': ["Detekován nepodporovaný příkaz '{0}'"]
+    'datagen_adapter_cmd_dummy': ["Detekován nepodporovaný příkaz '{0}'"],
+    'datagen_adapter_script_adapted': ["Skript byl adaptován"]
 }

@@ -208,17 +208,17 @@ class Extension(extension.Extension):
         oformat = CommandlineTool.get_input_option('gen-oformat')
 
         if (not action):
-            print('Missing option action')
+            print(self._mh._trn.msg('datagen_missing_option', 'action'))
         elif (action not in ['compile', 'decode', 'encode', 'transcode']):
-            print('Action not in compile|decode|encode|transcode')
+            print(self._mh._trn.msg('datagen_invalid_option_value', 'action', 'compile|decode|encode|transcode'))
         elif (not spec):
-            print('Missing option spec')
+            print(self._mh._trn.msg('datagen_missing_option', 'spec'))
         elif (not element and action in ['decode', 'encode', 'transcode']):
-            print('Missing option element')
+            print(self._mh._trn.msg('datagen_missing_option', 'element'))
         elif (iformat != False and iformat not in ['ber', 'der', 'oer', 'aper', 'uper', 'xer', 'gser']):
-            print('Input format not in ber|der|oer|aper|uper|xer|gser')
+            print(self._mh._trn.msg('datagen_invalid_option_value', 'iformat', 'ber|der|oer|aper|uper|xer|gser'))
         elif (oformat != False and oformat not in ['ber', 'der', 'oer', 'aper', 'uper', 'xer', 'gser']):
-            print('Output format not in ber|der|oer|aper|uper|xer|gser')
+            print(self._mh._trn.msg('datagen_invalid_option_value', 'oformat', 'ber|der|oer|aper|uper|xer|gser'))
         else:
 
             from hydratk.extensions.datagen.asn1codec import ASN1Codec
@@ -230,45 +230,45 @@ class Extension(extension.Extension):
             if (action == 'compile'):
                 res = codec.compile(spec)
                 if (res):
-                    print('Specification compiled')
+                    print(self._mh._trn.msg('datagen_asn1_compiled'))
                 else:
-                    print('Compilation error')
+                    print(self._mh._trn.msg('datagen_action_error', 'compile'))
 
             elif (action == 'decode'):
                 if (not input):
-                    print('Missing option input')
+                    print(self._mh._trn.msg('datagen_missing_option', 'input'))
                 else:
                     iformat = 'ber' if (not iformat) else iformat
                     res = codec.decode(spec, element, input, iformat, output)
                     if (res):
-                        print('File decoded')
+                        print(self._mh._trn.msg('datagen_asn1_decoded', output))
                     else:
-                        print('Decoding error')
+                        print(self._mh._trn.msg('datagen_action_error', 'decode'))
 
             elif (action == 'encode'):
                 if (not input):
-                    print('Missing option input')
+                    print(self._mh._trn.msg('datagen_missing_option', 'input'))
                 else:
                     oformat = 'ber' if (not oformat) else oformat
                     res = codec.encode(spec, element, input, oformat, output)
                     if (res):
-                        print('File encoded')
+                        print(self._mh._trn.msg('datagen_asn1_encoded', output))
                     else:
-                        print('Encoding error')
+                        print(self._mh._trn.msg('datagen_action_error', 'encode'))
 
             elif (action == 'transcode'):
                 if (not input):
-                    print('Missing option input')
+                    print(self._mh._trn.msg('datagen_missing_option', 'input'))
                 elif (not iformat):
-                    print('Missing option iformat')
+                    print(self._mh._trn.msg('datagen_missing_option', 'iformat'))
                 elif (not oformat):
-                    print('Missing option oformat')
+                    print(self._mh._trn.msg('datagen_missing_option', 'oformat'))
                 else:
                     res = codec.transcode(spec, element, input, iformat, oformat, output)
                     if (res):
-                        print('File transcoded')
+                        print(self._mh._trn.msg('datagen_asn1_transcoded', output))
                     else:
-                        print('Transcoding error')
+                        print(self._mh._trn.msg('datagen_action_error', 'transcode'))
 
     def gen_json(self):
         """Method handles command gen-json
@@ -290,7 +290,7 @@ class Extension(extension.Extension):
         output = CommandlineTool.get_input_option('gen-output')
 
         if (not spec):
-            print('Missing option spec')
+            print(self._mh._trn.msg('datagen_missing_option', 'spec'))
         else:
 
             from hydratk.extensions.datagen.jsongen import JSONGen
@@ -299,11 +299,11 @@ class Extension(extension.Extension):
             if (gen.import_schema(spec)):
                 output = None if (not output) else output
                 if (not gen.tojson(output)):
-                    print('Generation error')
+                    print(self._mh._trn.msg('datagen_action_error', 'generate'))
                 else:
-                    print('Sample generated')
+                    print(self._mh._trn.msg('datagen_jsongen_sample_written', output))
             else:
-                print('Import specification error')
+                print(self._mh._trn.msg('datagen_action_error', 'import specification'))
 
     def gen_xml(self):
         """Method handles command gen-xml
@@ -327,9 +327,9 @@ class Extension(extension.Extension):
         envelope = CommandlineTool.get_input_option('gen-envelope')
 
         if (not spec):
-            print('Missing option spec')
+            print(self._mh._trn.msg('datagen_missing_option', 'spec'))
         elif (not element):
-            print('Missing option element')
+            print(self._mh._trn.msg('datagen_missing_option', 'element'))
         else:
 
             from hydratk.extensions.datagen.xmlgen import XMLGen
@@ -338,11 +338,11 @@ class Extension(extension.Extension):
             if (gen.import_spec(spec)):
                 output = None if (not output) else output
                 if (not gen.toxml(element, output, envelope)):
-                    print('Generation error')
+                    print(self._mh._trn.msg('datagen_action_error', 'generate'))
                 else:
-                    print('Sample generated')
+                    print(self._mh._trn.msg('datagen_xmlgen_sample_written', output))
             else:
-                print('Import specification error')
+                print(self._mh._trn.msg('datagen_action_error', 'import specification'))
 
     def gen_selenium(self):
         """Method handles command gen-selenium
@@ -366,7 +366,7 @@ class Extension(extension.Extension):
         timeout = CommandlineTool.get_input_option('gen-timeout')
 
         if (not input):
-            print('Missing option input')
+            print(self._mh._trn.msg('datagen_missing_option', 'input'))
         else:
 
             from hydratk.extensions.datagen.adapters.selenium.adapter import Adapter
@@ -379,6 +379,6 @@ class Extension(extension.Extension):
 
             output = None if (not output) else output
             if (a.parse_test_suite(input, output)):
-                print('Script adapted')
+                print(self._mh._trn.msg('datagen_adapter_script_adapted'))
             else:
-                print('Script adaption error')
+                print(self._mh._trn.msg('datagen_action_error', 'script adaption'))

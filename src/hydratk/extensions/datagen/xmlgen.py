@@ -119,10 +119,9 @@ class XMLGen(object):
                         self._client = Client('file://' + wsdl, cache=None)
                         self._path = wsdl
                     else:
-                        raise ValueError(
-                            'Unknown specification type: {0}'.format(spec_type))
+                        raise ValueError(self._mh._trn.msg('datagen_xmlgen_unknown_spec', spec_type))
                 else:
-                    raise ValueError('File {0} not found'.format(filename))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', filename))
 
             self._mh.demsg('htk_on_debug_info', self._mh._trn.msg(
                 'datagen_xmlgen_spec_imported'), self._mh.fromhere())
@@ -165,7 +164,7 @@ class XMLGen(object):
 
             if (ev.will_run_default()):
                 if (self._client == None):
-                    raise ValueError('Specification is not imported yet')
+                    raise ValueError(self._mh._trn.msg('datagen_xmlgen_spec_not_imported'))
 
                 if (envelope):
                     ns = '{%s}' % 'http://schemas.xmlsoap.org/soap/envelope/'
@@ -212,7 +211,7 @@ class XMLGen(object):
         """
 
         if (self._client == None):
-            raise ValueError('Specification is not imported yet')
+            raise ValueError(self._mh._trn.msg('datagen_xmlgen_spec_not_imported'))
 
         try:
 
@@ -267,7 +266,7 @@ class XMLGen(object):
         """
 
         if (self._client == None):
-            raise ValueError('Specification is not imported yet')
+            raise ValueError(self._mh._trn.msg('datagen_xmlgen_spec_not_imported'))
 
         el_type = None
         for value in self._client.wsdl.schema.types.values():
@@ -297,7 +296,7 @@ class XMLGen(object):
         """
 
         if (self._client == None):
-            raise ValueError('Specification is not imported yet')
+            raise ValueError(self._mh._trn.msg('datagen_xmlgen_spec_not_imported'))
 
         ns = None
         for key in self._client.wsdl.schema.types.keys():
@@ -340,8 +339,8 @@ class XMLGen(object):
                     f.write(wsdl_tmpl.format(tns, tns, tns, filename))
 
                 return wsdl
-            except AttributeError as ex:
-                raise ValueError('File {0} is not valid XSD'.format(xsd))
+            except AttributeError:
+                raise ValueError(self._mh._trn.msg('datagen_xmlgen_invalid_spec', xsd))
 
         else:
-            raise ValueError('File {0} not found'.format(xsd))
+            raise ValueError(self._mh._trn.msg('datagen_file_not_found', xsd))

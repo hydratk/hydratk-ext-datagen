@@ -117,7 +117,7 @@ class Adapter(object):
                         doc = fromstring(f.read()) if (version_info[0] == 2) else fromstring(
                             bytes(bytearray(f.read(), encoding='utf-8')))
                 else:
-                    raise ValueError('File {0} not found'.format(suite))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', suite))
 
                 rows = doc.xpath('//table/tbody/tr/td')
                 self._suite = {
@@ -179,7 +179,7 @@ class Adapter(object):
                         doc = fromstring(f.read()) if (version_info[0] == 2) else fromstring(
                             bytes(bytearray(f.read(), encoding='utf-8')))
                 else:
-                    raise ValueError('File {0} not found'.format(test))
+                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', test))
 
                 url = doc.xpath('//head/link')[0].attrib['href']
                 rows = doc.xpath('//table/tbody/tr')
