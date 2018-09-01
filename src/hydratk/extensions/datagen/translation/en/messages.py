@@ -42,7 +42,7 @@ msg = {
     'datagen_xmlgen_sample_written': ["Sample written to file: '{0}'"],
     'datagen_adapter_parsing_suite': ["Parsing suite file: '{0}'"],
     'datagen_adapter_suite_parsed': ["Suite successfully parsed"],
-    'datagen_adapter_parsing_test': ["Parsing test file: '{0}'"],
+    'datagen_adapter_parsing_test': ["Parsing test"],
     'datagen_adapter_test_parsed': ["Test successfully parsed"],
     'datagen_adapter_cmd_unknown': ["Detected unknown command '{0}'"],
     'datagen_adapter_cmd_dummy': ["Detected not supported command '{0}'"],

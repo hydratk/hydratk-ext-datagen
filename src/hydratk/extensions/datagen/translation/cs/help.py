@@ -38,7 +38,9 @@ help_opt = {
     'gen-oformat': {'{h}[--gen-oformat ber|der|oer|aper|uper|xer|gser]{e}': {'description': 'výstupní formát, default ber pro akci encode, gser pro akci decode', 'commands': ('gen-asn1')}},
     'gen-envelope': {'{h}[--gen-envelope]{e}': {'description': 'generovat včetně SOAP obálky', 'commands': ('gen-xml')}},
     'gen-browser': {'{h}[--gen-browser <title>]{e}': {'description': 'použitý prohlížeč, default Firefox', 'commands': ('gen-selenium')}},
+    'gen-browser': {'{h}[--gen-headless]{e}': {'description': 'headless režim, default False', 'commands': ('gen-selenium')}},
     'gen-timeout': {'{h}[--gen-timeout <number>]{e}': {'description': 'timeout pro wait příkazy, default 10', 'commands': ('gen-selenium')}},
+    'gen-url': {'{h}[--gen-url <url>]{e}': {'description': 'hlavní url, default http://localhost', 'commands': ('gen-selenium')}},
 
     # standalone with option profile datagen
     'spec': {'{h}--spec <cesta>{e}': {'description': 'soubor se specifikací', 'commands': ('asn1', 'json', 'xml')}},
@@ -50,5 +52,7 @@ help_opt = {
     'oformat': {'{h}[--oformat ber|der|oer|aper|uper|xer|gser]{e}': {'description': 'výstupní formát, default ber pro akci encode, gser pro akci decode', 'commands': ('asn1')}},
     'envelope': {'{h}[--envelope]{e}': {'description': 'generovat včetně SOAP obálky', 'commands': ('xml')}},
     'browser': {'{h}[--browser <title>]{e}': {'description': 'použitý prohlížeč, default Firefox', 'commands': ('selenium')}},
-    'timeout': {'{h}[--timeout <number>]{e}': {'description': 'timeout pro wait příkazy, default 10', 'commands': ('selenium')}}
+    'browser': {'{h}[--headless]{e}': {'description': 'headless režim, default False', 'commands': ('selenium')}},
+    'timeout': {'{h}[--timeout <number>]{e}': {'description': 'timeout pro wait příkazy, default 10', 'commands': ('selenium')}},
+    'url': {'{h}[--url <url>]{e}': {'description': 'hlavní url, default http://localhost', 'commands': ('selenium')}}
 }

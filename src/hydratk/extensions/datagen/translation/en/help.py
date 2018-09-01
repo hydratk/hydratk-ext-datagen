@@ -38,7 +38,9 @@ help_opt = {
     'gen-oformat': {'{h}[--gen-oformat ber|der|oer|aper|uper|xer|gser]{e}': {'description': 'output format, default ber for action encode, gser for action decode', 'commands': ('gen-asn1')}},
     'gen-envelope': {'{h}[--gen-envelope]{e}': {'description': 'generate including SOAP envelope', 'commands': ('gen-xml')}},
     'gen-browser': {'{h}[--gen-browser <title>]{e}': {'description': 'browser to be used, default Firefox', 'commands': ('gen-selenium')}},
+    'gen-headless': {'{h}[--gen-headless]{e}': {'description': 'headless mode, default False', 'commands': ('gen-selenium')}},
     'gen-timeout': {'{h}[--gen-timeout <number>]{e}': {'description': 'timeout for wait commands, default 10', 'commands': ('gen-selenium')}},
+    'gen-url': {'{h}[--gen-url <url>]{e}': {'description': 'base url, default http://localhost', 'commands': ('gen-selenium')}},
 
     # standalone with option profile datagen
     'spec': {'{h}--spec <path>{e}': {'description': 'specification filename', 'commands': ('asn1', 'json', 'xml')}},
@@ -50,5 +52,7 @@ help_opt = {
     'oformat': {'{h}[--oformat ber|der|oer|aper|uper|xer|gser]{e}': {'description': 'output format, default ber for action encode, gser for action decode', 'commands': ('asn1')}},
     'envelope': {'{h}[--envelope]{e}': {'description': 'generate including SOAP envelope', 'commands': ('xml')}},
     'browser': {'{h}[--browser <title>]{e}': {'description': 'browser to be used, default Firefox', 'commands': ('selenium')}},
-    'timeout': {'{h}[--timeout <number>]{e}': {'description': 'timeout for wait commands, default 10', 'commands': ('selenium')}}
+    'headless': {'{h}[--headless]{e}': {'description': 'headless mode, default False', 'commands': ('selenium')}},
+    'timeout': {'{h}[--timeout <number>]{e}': {'description': 'timeout for wait commands, default 10', 'commands': ('selenium')}},
+    'url': {'{h}[--url <url>]{e}': {'description': 'base url, default http://localhost', 'commands': ('selenium')}}
 }

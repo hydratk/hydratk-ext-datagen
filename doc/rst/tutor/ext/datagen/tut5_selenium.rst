@@ -3,7 +3,7 @@
 Tutorial 5: Selenium
 ====================
 
-Adapter of Selenium scripts (used by Firefox IDE plugin) to Yoda format
+Adapter of Selenium scripts (used by Katalon Recorder plugin for Firefox, Chrome) to Yoda format
 
 Command line
 ^^^^^^^^^^^^
@@ -18,7 +18,9 @@ Optional:
 
 * --gen-output <path>: path to output file, default <test suite>.jedi
 * --gen-browser <title>: browser to be used, default Firefox
+* --gen-headless: headless mode, default False
 * --gen-timeout <number>: timeout for wait commands, default 10
+* --gen-url <url>: base url, default http://localhost
 
 Adapter
 ^^^^^^^
@@ -29,7 +31,7 @@ Adapter
      
      Script adapted
      
-     $ htk --gen-input test.html --gen-browser PhantomJS --gen-timeout 5 gen-selenium 
+     $ htk --gen-input test.html --gen-browser Firefox --gen-headless --gen-timeout 5 --gen-url "http://0.0.0.0:8888" gen-selenium 
      
      Script adapted     
      

@@ -177,8 +177,10 @@ Type man datagen to display manual page.
            Options:
               --gen-input <path> - input filename
               [--gen-browser <title>] - browser to be used, default Firefox
+              [--gen-headless] - headless mode, default False
               [--gen-output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
               [--gen-timeout <number>] - timeout for wait commands, default 10
+              [--gen-url <url>] - base url, default http://localhost
 
         gen-xml - generate sample xml file according to WSDL/XSD specification
            Options:
@@ -219,8 +221,10 @@ You can run DataGen also in standalone mode.
            Options:
               --input <path> - input filename
               [--browser <title>] - browser to be used, default Firefox
+              [--headless] - headless mode, default False
               [--output <path>] - output filename, default input filename with changed suffix or sample.json, sample.xml
-              [--timeout <number>] - timeout for wait commands, default 10              
+              [--timeout <number>] - timeout for wait commands, default 10
+              [--url <url>] - base url, default http://localhost              
 
         xml - generate sample xml file according to WSDL/XSD specification
            Options:

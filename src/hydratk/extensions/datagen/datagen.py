@@ -42,7 +42,7 @@ class Extension(extension.Extension):
 
         self._ext_id = 'datagen'
         self._ext_name = 'DataGen'
-        self._ext_version = '0.1.3'
+        self._ext_version = '0.1.4'
         self._ext_author = 'Petr Rašek <bowman@hydratk.org>, HydraTK team <team@hydratk.org>'
         self._ext_year = '2016-2018'
 
@@ -129,7 +129,9 @@ class Extension(extension.Extension):
         self._mh.match_long_option('gen-oformat', True, 'gen-oformat')
         self._mh.match_long_option('gen-envelope', False, 'gen-envelope')
         self._mh.match_long_option('gen-browser', True, 'gen-browser')
+        self._mh.match_long_option('gen-headless', False, 'gen-headless')
         self._mh.match_long_option('gen-timeout', True, 'gen-timeout')
+        self._mh.match_long_option('gen-url', True, 'gen-url')
 
     def _register_standalone_actions(self):
         """Method registers command hooks for standalone mode
@@ -172,7 +174,9 @@ class Extension(extension.Extension):
         self._mh.match_long_option('oformat', True, 'gen-oformat', False, option_profile)
         self._mh.match_long_option('envelope', False, 'gen-envelope', False, option_profile)
         self._mh.match_long_option('browser', True, 'gen-browser', False, option_profile)
+        self._mh.match_long_option('headless', False, 'gen-headless', False, option_profile)
         self._mh.match_long_option('timeout', True, 'gen-timeout', False, option_profile)
+        self._mh.match_long_option('url', True, 'gen-url', False, option_profile)
 
         self._mh.match_cli_option(('c', 'config'), True, 'config', False, option_profile)
         self._mh.match_cli_option(('d', 'debug'), True, 'debug', False, option_profile)
@@ -363,7 +367,9 @@ class Extension(extension.Extension):
         input = CommandlineTool.get_input_option('gen-input')
         output = CommandlineTool.get_input_option('gen-output')
         browser = CommandlineTool.get_input_option('gen-browser')
+        headless = CommandlineTool.get_input_option('gen-headless')
         timeout = CommandlineTool.get_input_option('gen-timeout')
+        url = CommandlineTool.get_input_option('gen-url')
 
         if (not input):
             print(self._mh._trn.msg('datagen_missing_option', 'input'))
@@ -374,8 +380,12 @@ class Extension(extension.Extension):
             a = Adapter()
             if (browser):
                 a.browser = browser
+            if (headless):
+                a.headless = True
             if (timeout):
                 a.timeout = timeout
+            if (url):
+                a.base_url = url
 
             output = None if (not output) else output
             if (a.parse_test_suite(input, output)):

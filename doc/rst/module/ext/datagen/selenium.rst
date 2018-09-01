@@ -18,19 +18,25 @@ Unit tests available at hydratk/extensions/datagen/adapters/selenium/01_methods_
 * _suite - test suite metadata
 * _tests - test cases metadata
 * _browser - used browser, default Firefox
+* _headless - headless mode, default False
 * _timeout - timeout for wait commands, default 10
+* _base_url - base url, default http://localhost
 
 **Properties (Getters)** :
 
 * suite - returns _suite
 * tests - returns _tests
 * browser - returns _browser
+* headless - returns _headless
 * timeout - returns _browser
+* base_url - returns _base_url
 
 **Properties (Setters)**:
 
 * browser - sets _browser
+* headless - sets _headless
 * timeout - sets _timeout
+* base_url - sets _base_url
 
 **Methods** :
 
@@ -46,8 +52,8 @@ It prepares Yoda script content using method adapt_suite and creates output file
 
 * parse_test
 
-Method parses Selenium script (test case file). First fires event adapter_before_parse_test where parameter test can be rewritten.
-It uses lxml method fromstring to parse html file and stores metadata to attribute _tests. It uses method parse_test for each test specified in suite.
+Method parses Selenium test. First fires event adapter_before_parse_test where parameter test can be rewritten.
+It uses lxml method fromstring to parse html content and stores metadata to attribute _tests. It uses method parse_test for each test specified in suite.
 After that fires event adapter_after_parse_test and returns bool.
 
 * adapt_suite

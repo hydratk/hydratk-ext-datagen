@@ -73,7 +73,7 @@ Test-Scenario-2:
     Test-Condition-3: 
       Id: tco_03
       Name: tco_browser
-      Desc: Getter broswer
+      Desc: Getter browser
       
       Test: |
         res = a.browser
@@ -85,6 +85,19 @@ Test-Scenario-2:
         
     Test-Condition-4: 
       Id: tco_04
+      Name: tco_headless
+      Desc: Getter headless
+      
+      Test: |
+        res = a.headless
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._headless
+        assert(res == exp), '_headless = {0}'.format(exp)        
+        
+    Test-Condition-5: 
+      Id: tco_05
       Name: tco_timeout
       Desc: Getter timeout
       
@@ -94,7 +107,20 @@ Test-Scenario-2:
       Validate: |   
         this.test_result = res
         exp = a._timeout
-        assert(res == exp), '_timeout = {0}'.format(exp) 
+        assert(res == exp), '_timeout = {0}'.format(exp)
+        
+    Test-Condition-6: 
+      Id: tco_06
+      Name: tco_base_url
+      Desc: Getter base_url
+      
+      Test: |
+        res = a.base_url
+      
+      Validate: |   
+        this.test_result = res
+        exp = a._base_url
+        assert(res == exp), '_base_url = {0}'.format(exp)          
         
   Test-Case-2:
     Id: tc_02
@@ -115,9 +141,22 @@ Test-Scenario-2:
       Validate: |   
         this.test_result = res
         assert(res == obj), 'browser = {0}'.format(obj)        
-    
+
     Test-Condition-2: 
       Id: tco_02
+      Name: tco_headless
+      Desc: Setter headless
+      
+      Test: |
+        a.headless = obj
+        res = a.headless
+      
+      Validate: |   
+        this.test_result = res
+        assert(res == obj), 'headless = {0}'.format(obj) 
+    
+    Test-Condition-3: 
+      Id: tco_03
       Name: tco_timeout
       Desc: Setter timeout
       
@@ -127,7 +166,20 @@ Test-Scenario-2:
       
       Validate: |   
         this.test_result = res
-        assert(res == obj), 'timeout = {0}'.format(obj)       
+        assert(res == obj), 'timeout = {0}'.format(obj)
+        
+    Test-Condition-4: 
+      Id: tco_04
+      Name: tco_base_url
+      Desc: Setter base_url
+      
+      Test: |
+        a.base_url = obj
+        res = a.base_url
+      
+      Validate: |   
+        this.test_result = res
+        assert(res == obj), 'base_url = {0}'.format(obj)                 
         
 Test-Scenario-3:
   Id: ts_03
@@ -167,7 +219,7 @@ Test-Scenario-3:
       Validate: |
         this.test_result = res
         assert (res), 'parse_test_suite = True'  
-        outfile = './Test Suite.jedi'
+        outfile = './selenium_suite.jedi'
         this.test_result = res = (path.exists(outfile))
         assert (res), 'file {0} created'.format(outfile)
         remove(outfile)            

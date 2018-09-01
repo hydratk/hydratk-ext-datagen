@@ -66,7 +66,8 @@ Test-Scenario-2:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-iformat', 'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-headless', 'gen-iformat', 
+               'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout', 'gen-url']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)
         th.clear_cmd()
         
@@ -105,8 +106,8 @@ Test-Scenario-3:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)  
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'iformat', 'input', 'interactive', 
-               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'headless', 'home', 'iformat', 'input', 'interactive', 
+               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout', 'url']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()     
         
@@ -146,7 +147,7 @@ Test-Scenario-4:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['htk']
         this.test_result = str(res)
-        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-iformat', 'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout']
+        exp = ['gen-action', 'gen-browser', 'gen-element', 'gen-envelope', 'gen-headless', 'gen-iformat', 'gen-input', 'gen-oformat', 'gen-output', 'gen-spec', 'gen-timeout', 'gen-url']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)        
         th.clear_cmd()    
         
@@ -169,8 +170,8 @@ Test-Scenario-4:
         assert (sorted(res.keys()) == exp), '_cmd_hooks = {0}'.format(exp)
         res = commandopt.long_opt['datagen']
         this.test_result = str(res)
-        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'home', 'iformat', 'input', 'interactive', 
-               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout']
+        exp = ['action', 'browser', 'config', 'debug', 'debug-channel', 'element', 'envelope', 'force', 'headless', 'home', 'iformat', 'input', 'interactive', 
+               'language', 'oformat', 'output', 'run-mode', 'spec', 'timeout', 'url']
         assert (sorted(res) == exp), 'long_opt = {0}'.format(exp)           
         th.clear_cmd()
         
@@ -650,9 +651,9 @@ Test-Scenario-8:
         ext = th._ext['DataGen']
         th.pre_replace()
         TestHead.options = {'gen-input': prefix+'/var/local/hydratk/yoda/helpers/yodahelpers/hydratk/extensions/datagen/selenium_suite.html',
-                            'gen-browser': 'Firefox', 'gen-timeout': '5'}
+                            'gen-browser': 'Firefox', 'gen-headless': True, 'gen-timeout': '5', 'gen-url': 'http://0.0.0.0:8888'}
         ext.gen_selenium()
-        file = './Test Suite.jedi'
+        file = './selenium_suite.jedi'
         res = path.exists(file)
         
       Validate: |

@@ -21,7 +21,7 @@ adapter_after_parse_test
 from hydratk.core.masterhead import MasterHead
 from hydratk.core import event
 import hydratk.extensions.datagen.adapters.selenium.config as cfg
-from lxml.html import fromstring
+from lxml.html import fromstring, tostring
 from os import path
 from sys import version_info
 
@@ -34,7 +34,9 @@ class Adapter(object):
     _suite = None
     _tests = None
     _browser = 'Firefox'
+    _headless = False
     _timeout = 10
+    _base_url = 'http://localhost'
 
     def __init__(self):
         """Class constructor
@@ -74,6 +76,18 @@ class Adapter(object):
         self._browser = value
 
     @property
+    def headless(self):
+        """ headless property getter """
+
+        return self._headless
+
+    @headless.setter
+    def headless(self, value):
+        """ headless property setter """
+
+        self._headless = value
+
+    @property
     def timeout(self):
         """ timeout property getter """
 
@@ -84,6 +98,18 @@ class Adapter(object):
         """ timeout property setter """
 
         self._timeout = value
+
+    @property
+    def base_url(self):
+        """ base_url property getter """
+
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, value):
+        """ base_url property setter """
+
+        self._base_url = value
 
     def parse_test_suite(self, suite, outfile=None):
         """Method parses test suite file
@@ -103,8 +129,7 @@ class Adapter(object):
 
         try:
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
-                'datagen_adapter_parsing_suite', suite), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_adapter_parsing_suite', suite), self._mh.fromhere())
             ev = event.Event('adapter_before_parse_suite', suite, outfile)
             if (self._mh.fire_event(ev) > 0):
                 suite = ev.argv(0)
@@ -114,49 +139,42 @@ class Adapter(object):
 
                 if (path.exists(suite)):
                     with open(suite, 'r') as f:
-                        doc = fromstring(f.read()) if (version_info[0] == 2) else fromstring(
-                            bytes(bytearray(f.read(), encoding='utf-8')))
+                        doc = fromstring(f.read()) if (version_info[0] == 2) else fromstring(bytes(bytearray(f.read(), encoding='utf-8')))
                 else:
                     raise ValueError(self._mh._trn.msg('datagen_file_not_found', suite))
 
-                rows = doc.xpath('//table/tbody/tr/td')
-                self._suite = {
-                    'file': suite, 'title': rows[0].xpath('b')[0].text}
+                tabs = doc.xpath('.//table')
+                self._suite = {'file': suite, 'title': doc.xpath('.//title')[0].text}
 
                 self._tests = []
-                for row in rows[1:]:
-                    elem = row.xpath('a')[0]
-                    test = {'title': elem.text, 'file': elem.attrib['href']}
-                    test['url'], test['steps'] = self.parse_test(
-                        path.join(path.dirname(suite), test['file']))
+                for tab in tabs:
+                    test = self.parse_test(tab)
                     self._tests.append(test)
 
                 scenario = self.adapt_suite(self._suite, self._tests)
-                outfile = outfile if (
-                    outfile != None) else self._suite['title'] + '.jedi'
+                outfile = outfile if (outfile != None) else self._suite['title'] + '.jedi'
                 with open(outfile, 'w') as f:
                     f.write(scenario)
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
-                'datagen_adapter_suite_parsed'), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_adapter_suite_parsed'), self._mh.fromhere())
             ev = event.Event('adapter_after_parse_suite')
             self._mh.fire_event(ev)
 
             return True
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg(
+            self._mh.demsg(
                 'htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return False
 
-    def parse_test(self, test):
+    def parse_test(self, doc):
         """Method parses test file
 
         Args:
-            test (str): test filename
+            doc (xml): xml document
 
         Returns:
-            tuple: url (str), steps (list)
+            dict
 
         Raises:
             event: adapter_before_parse_test
@@ -166,41 +184,32 @@ class Adapter(object):
 
         try:
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
-                'datagen_adapter_parsing_test', test), self._mh.fromhere())
-            ev = event.Event('adapter_before_parse_test', test)
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_adapter_parsing_test'), self._mh.fromhere())
+            ev = event.Event('adapter_before_parse_test', doc)
             if (self._mh.fire_event(ev) > 0):
-                test = ev.argv(0)
+                doc = ev.argv(0)
 
+            test = {}
             if (ev.will_run_default()):
 
-                if (path.exists(test)):
-                    with open(test, 'r') as f:
-                        doc = fromstring(f.read()) if (version_info[0] == 2) else fromstring(
-                            bytes(bytearray(f.read(), encoding='utf-8')))
-                else:
-                    raise ValueError(self._mh._trn.msg('datagen_file_not_found', test))
-
-                url = doc.xpath('//head/link')[0].attrib['href']
-                rows = doc.xpath('//table/tbody/tr')
-                steps = []
+                test['title'] = doc.xpath('.//thead/tr/td')[0].text
+                rows = doc.xpath('.//tbody/tr')
+                test['steps'] = []
 
                 for row in rows:
-                    cols = row.xpath('td')
-                    step = {'command': cols[0].text, 'target': cols[
-                        1].text, 'value': cols[2].text}
-                    steps.append(step)
+                    cols = row.xpath('.//td')
+                    target = cols[1].text.rstrip() if (len(cols[1].text.rstrip()) > 0) else None
+                    step = {'command': cols[0].text, 'target': target, 'value': cols[2].text}
+                    test['steps'].append(step)
 
-            self._mh.dmsg('htk_on_debug_info', self._mh._trn.msg(
-                'datagen_adapter_test_parsed'), self._mh.fromhere())
+            self._mh.demsg('htk_on_debug_info', self._mh._trn.msg('datagen_adapter_test_parsed'), self._mh.fromhere())
             ev = event.Event('adapter_after_parse_test')
             self._mh.fire_event(ev)
 
-            return url, steps
+            return test
 
         except (Exception, ValueError) as ex:
-            self._mh.dmsg(
-                'htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
+            self._mh.demsg('htk_on_error', 'error: {0}'.format(ex), self._mh.fromhere())
             return None
 
     def adapt_suite(self, suite, tests):
@@ -219,8 +228,7 @@ class Adapter(object):
         for i in range(0, len(tests)):
             cases += self.adapt_test(i, tests[i])
 
-        scenario = cfg.tmpl_scenario.format(
-            title=suite['title'], pre_req=cfg.tmpl_pre_req, cases=cases)
+        scenario = cfg.tmpl_scenario.format(title=suite['title'], pre_req=cfg.tmpl_pre_req, cases=cases)
 
         return scenario
 
@@ -238,21 +246,19 @@ class Adapter(object):
 
         conditions = ''
         for i in range(0, len(test['steps'])):
-            conditions += self.adapt_step(i, test['steps'][i], test['url'])
+            conditions += self.adapt_step(i, test['steps'][i])
 
         case = '  ' if (idx > 0) else ''
-        case += cfg.tmpl_case.format(idx=idx + 1,
-                                     title=test['title'], conditions=conditions)
+        case += cfg.tmpl_case.format(idx=idx + 1, title=test['title'], conditions=conditions)
 
         return case
 
-    def adapt_step(self, idx, step, url):
+    def adapt_step(self, idx, step):
         """Method adapts step to condition
 
         Args:
             idx (int): index
             step (dict): step
-            url (str): base url
 
         Returns:
             str   
@@ -260,18 +266,16 @@ class Adapter(object):
         """
 
         condition = '    ' if (idx > 0) else ''
-        test, validate = self.handle_command(step, url)
-        condition += cfg.tmpl_condition.format(
-            idx=idx + 1, title=step['command'], test=test, validate=validate)
+        test, validate = self.handle_command(step)
+        condition += cfg.tmpl_condition.format(idx=idx + 1, title=step['command'], test=test, validate=validate)
 
         return condition
 
-    def handle_command(self, step, url):
+    def handle_command(self, step):
         """Method handles command
 
         Args:
             step (dict): step
-            url (str): base url
 
         Returns:
             tuple: test (str), validate (str)   
@@ -291,7 +295,7 @@ class Adapter(object):
             test, validate = """print('Not supported command: {0}')""".format(
                 step['command']), """assert False"""
         else:
-            test, validate = getattr(self, handler)(step, url)
+            test, validate = getattr(self, handler)(step)
 
         return test, validate
 
@@ -308,7 +312,7 @@ class Adapter(object):
         """
 
         command = step['command']
-        if (command in ['assertAlert', 'assertConfirmation', 'assertNotAlert', 'assertNotConfirmation',
+        if (command in ['assertAlert', 'assertConfirmation', 'assertConfirmationAndWait', 'assertNotAlert', 'assertNotConfirmation',
                         'verifyAlert', 'verifyNotAlert', 'verifyNotConfirmation']):
             test = """res = c.check_alert()[1]"""
             if ('Not' in command):
@@ -395,12 +399,11 @@ class Adapter(object):
 
         return test, validate
 
-    def cmd_open(self, step, url, *args):
+    def cmd_open(self, step, *args):
         """Method handles command open
 
         Args:
             step (dict): step
-            url (str): base url
             args (args): arguments
 
         Returns:
@@ -408,11 +411,11 @@ class Adapter(object):
 
         """
 
-        test = """c = SeleniumBridge('{0}')
-        res = c.open('{1}')""".format(self._browser, url + step['target'])
+        test = """c = SeleniumBridge('{0}', {1})
+        res = c.open('{2}')""".format(self._browser, self._headless, self._base_url + step['target'])
         validate = cfg.tmpl_validate + \
             """assert (res), 'page {0} not opened'""".format(
-                url + step['target'])
+                self._base_url + step['target'])
 
         return test, validate
 
@@ -523,7 +526,7 @@ class Adapter(object):
                 target = target[0]
         value = step['value'] if (step['value'] != None) else ''
 
-        if (command in ['store']):
+        if (command in ['store', 'storeAndWait']):
             test = """my.pocket.content['{0}'] = '{1}'""".format(value, target)
             validate = """this.test_result = True
         assert (res), 'value not stored'"""
@@ -589,6 +592,11 @@ class Adapter(object):
         my.pocket.content['{1}'] = len(res) if (res != None) else 0""".format(ident, value)
             validate = """this.test_result = len(res) if (res != None) else 0 
         assert (res != None), 'count not stored'"""
+        elif (command in ['storeCssCount']):
+            test = """res = c.get_element('{0}', 'css', False)
+        my.pocket.content['{1}'] = len(res) if (res != None) else 0""".format(ident, value)
+            validate = """this.test_result = len(res) if (res != None) else 0
+        assert (res != None), 'count not stored'"""
 
         return test, validate
 
@@ -604,8 +612,7 @@ class Adapter(object):
 
         """
 
-        command, target = step['command'], step['target'].split(
-            '=') if (step['target'] != None) else ''
+        command, target = step['command'], step['target'].split('=') if (step['target'] != None) else ''
         if (target != ''):
             if (target[0] in ['id', 'name', 'link', 'css'] or target[0][0] == '/'):
                 if (target[0][0] == '/'):
@@ -723,6 +730,15 @@ class Adapter(object):
             else:
                 validate = """this.test_result = len(res) if (res != None) else 0 
         assert (this.test_result == {0}), 'element {1} count != {2}'""".format(value, ident, value)
+        elif (command in ['assertCssCount', 'assertNotCssCount', 'verifyCssCount', 'verifyNotCssCount']):
+            test = """res = c.get_element('{0}', 'css', False)""".format(
+                ident)
+            if ('Not' in command):
+                validate = """this.test_result = len(res) if (res != None) else 0
+        assert (this.test_result != {0}), 'element {1} count = {2}'""".format(value, ident, value)
+            else:
+                validate = """this.test_result = len(res) if (res != None) else 0
+        assert (this.test_result == {0}), 'element {1} count != {2}'""".format(value, ident, value)
 
         return test, validate
 
@@ -837,6 +853,13 @@ class Adapter(object):
                     ident, value)
             else:
                 cond = """len(c.get_element('{0}', 'xpath', False)) == {1}""".format(
+                    ident, value)
+        elif (command in ['waitForCssCount', 'waitForNotCssCount']):
+            if ('Not' in command):
+                cond = """len(c.get_element('{0}', 'css', False)) != {1}""".format(
+                    ident, value)
+            else:
+                cond = """len(c.get_element('{0}', 'css', False)) == {1}""".format(
                     ident, value)
 
         test = test.format(self._timeout, cond)
